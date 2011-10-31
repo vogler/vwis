@@ -1,31 +1,44 @@
 \documentclass[11pt,a4paper]{scrartcl}
-\usepackage[latin9]{inputenc}
-\usepackage{ucs}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{lmodern}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\author{Max-Emanuel Hoffmann\\Ralf Vogler\\Sebastian Wiesner}
-\title{Verteilte und Web-Informationssysteme WS11/12\\Blatt 2}
+\usepackage{enumerate}
 
 \begin{document}
+
+\author{Gruppe 12\\Max-Emanuel Hoffmann\\Ralf Vogler\\Sebastian Wiesner}
+\title{Verteilte und Web-Informationssysteme}
+\subtitle{Blatt 2}
+
 \maketitle
 
-\section{Aufgabe 1}
-\subsection{a)}
-Bind-Join:\\
-\begin{align}
-t = r*l + j*l + \frac{r*k_R + j*k_S}{b}
-\end{align}
-Normaler Join:\\
-\begin{align}
-t = s*l + \frac{s*k_S}{b}
-\end{align}
+\section*{Aufgabe 1}
 
-\subsection{b)}
-Wenn Daten von Fremdsystemen gejoint werden m�ssen. Eine �bertragung der gesamten Relation kommt z.B. nicht in Frage wenn die andere Relation sehr gro� ist oder aus Datenschutzgr�nden kein Zugriff auf alle Tupel gew�hrt werden darf.
+\begin{enumerate}[a)]
+\item Bind-Join:
+\begin{align*}
+t = (r + j)l + \frac{r*k_R + j*k_S}{b}
+\end{align*}
+Normaler Join:
+\begin{align*}
+t = 2l + \frac{s*k_S}{b}
+\end{align*}
+Es ist zu erkennen, dass die Latenzzeit beim \emph{Bind-Join} einen größeren
+Einfluss hat, da sie proportional zur Größe der Relation $R$ in die 
+Übertragung eingeht, während sie beim normalen Join nur mit einem konstanten 
+Faktor einfließt.
+\item Diese Situation kommt vor, wenn Daten aus Fremdsystemen gejoint werden
+müssen.  Eine Übertragung der Relation kommt beispielsweise nicht in Frage, 
+wenn die andere Relation sehr groß ist, oder aus Gründen des Datenschutzes 
+kein Zugriff auf alle Tupel gewährt werden darf.
+\end{enumerate}
 
-
-\section{Aufgabe 2}
+\section*{Aufgabe 2}
 Java, siehe Anhang
 
 \end{document}
