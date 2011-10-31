@@ -1,75 +1,174 @@
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tablescan extends DBIterator {
+/**
+ * Load a table from a file.
+ */
+public class Tablescan implements DBIterator {
 
-	private String filename;
-	private DataInputStream in;
-	private BufferedReader br;
-	private String[] names;
-	private String[] types;
-	private int linecount = 2;
+    /**
+     * Loads a table from the given file.
+     * 
+     * @param filename the file to load
+     */
+    public Tablescan(final String filename) {
+        this(FileSystems.getDefault().getPath(filename));
+    }
 
-	public Tablescan(String filename) throws Exception {
-		this.filename = filename;
-	}
+    /**
+     * Loads a table from the given file.
+     * 
+     * @param filepath the file to load
+     */
+    public Tablescan(final Path filepath) {
+        this.filepath = filepath;
+        this.source = null;
+    }
 
-	@Override
-	String[] open() throws Exception {
-		FileInputStream fstream = new FileInputStream(filename);
-		in = new DataInputStream(fstream);
-		br = new BufferedReader(new InputStreamReader(in));
-		String snames = br.readLine();
-		String stypes = br.readLine();
-		if(snames == null || stypes == null) throw new Exception("Header has the wrong format!");
-		names = snames.split("\t");
-		types = stypes.split("\t");
-		if(names.length != types.length) throw new Exception("#colums have to match!");
-		
-		return names;
-	}
+    /**
+     * Parses the header.
+     * 
+     * The header consists of two lines.  The first line provides the names of
+     * the attributes of the table separated by TAB characters.  The second line
+     * defines the types of each row, again separated by TAB characters.
+     * 
+     * @throws IOException if reading the file failed
+     * @throws TableFormatException if the header has an invalid format
+     */
+    private void parseHeader() throws IOException, TableFormatException {
+        final String namesline = this.source.readLine();
+        final String typesline = this.source.readLine();
+        if (namesline == null || typesline == null) {
+            throw new TableFormatException("Missing header");
+        }
+        this.names = namesline.split("\t");
+        this.types = typesline.split("\t");
+        if (this.names.length != this.types.length) {
+            throw new TableFormatException("Mismatching header length");
+        }
+    }
 
-	@Override
-	Object[] next() throws Exception {
-		if(br == null) throw new Exception("open() as to be called before next()!");
-		String line =  br.readLine();
-		if(line == null) return null;
-		linecount++;
-		String[] values = line.split("\t");
-		if(values.length != names.length) throw new Exception("Error in line "+linecount+": #colums have to match!");
-		return parse(values);
-	}
+    /**
+     * Parses the next line into a typed tuple.
+     * 
+     * A line contains values for each column of the relation separated by TAB
+     * characters.  Each value is parsed according to the type defined for the
+     * column in the header.
+     * 
+     * @return the parsed tuple, or null, if there are no further lines
+     * @throws IOException if reading of the line failed
+     * @throws TableFormatException if the line has an invalid format
+     */
+    private Object[] parseNextLine() throws TableFormatException, IOException {
+        final String line = this.source.readLine();
+        if (line == null) {
+            return null;
+        }
 
-	private Object[] parse(String[] values) throws Exception {
-		List<Object> ret = new ArrayList<Object>();
-		for(int i=0; i<types.length; i++){
-			// strip quotes
-			// TODO regex
-			if(types[i].equals("String")) values[i] = values[i].substring(1, values[i].length()-1);
-			// TODO generic solution
-//			ret.add(Class.forName("java.lang."+types[i]).cast(values[i]));
-			// java7 in eclipse?? -> no switch on strings
-			if(types[i].equals("String")){
-				ret.add(values[i]);
-			}else if(types[i].equals("Integer")){
-				ret.add(Integer.parseInt(values[i]));
-			}else if(types[i].equals("Double")){
-				ret.add(Double.parseDouble(values[i]));
-			}else if(types[i].equals("Float")){
-				ret.add(Float.parseFloat(values[i]));
-			}else{
-				throw new Exception("Unkown attribute type! Allowed: String, Integer, Double, Float");
-			}
-		}
-		return ret.toArray();
-	}
+        final String[] values = line.split("\t");
+        if (values.length != this.names.length) {
+            throw new TableFormatException(
+                    String.format("Length mismatch in line %s",
+                    this.source.getLineNumber()));
 
-	@Override
-	void close() throws Exception {
-		in.close();
-	}
+        }
+
+        final List<Object> parsedValues = new ArrayList<>(values.length);
+        for (int i = 0; i < values.length; ++i) {
+            final String typename = this.types[i];
+            final String value = values[i];
+            switch (typename) {
+                case "String":
+                    parsedValues.add(value.replaceAll("^\"|\"$", ""));
+                    break;
+                case "Integer":
+                    parsedValues.add(Integer.valueOf(value));
+                    break;
+                case "Double":
+                    parsedValues.add(Double.valueOf(value));
+                    break;
+                case "Float":
+                    parsedValues.add(Float.valueOf(value));
+                    break;
+                default:
+                    throw new TableFormatException(
+                            String.format("Unknown type: %1", typename));
+            }
+        }
+        return parsedValues.toArray();
+    }
+
+    /**
+     * Opens the relation.
+     * 
+     * This method opens the underlying file, and parses its header.
+     * 
+     * @return the names of the attributes of this table
+     * @throws IOException if opening or reading the file failed
+     * @throws TableFormatException if the header has an invalid format
+     */
+    public String[] open() throws IOException, TableFormatException {
+        this.close();
+        this.source = new LineNumberReader(Files.newBufferedReader(
+                this.filepath, Charset.forName("UTF-8")));
+        this.parseHeader();
+        return this.names;
+    }
+
+    /**
+     * Gets the next tuple in this relation.
+     * 
+     * @return the next tuple, or null, if there is no further tuple in the 
+     *         relation
+     * @throws IOException if reading of the file failed
+     * @throws TableFormatException if the line has an invalid format
+     */
+    @Override
+    public Object[] next() throws IOException, TableFormatException {
+        if (this.source == null) {
+            throw new IOException("Relation is closed");
+        }
+        return this.parseNextLine();
+    }
+
+    /**
+     * Closes this relation.
+     * 
+     * @throws IOException if closing failed
+     */
+    @Override
+    public void close() throws IOException {
+        if (this.source != null) {
+            this.source.close();
+        }
+        this.source = null;
+    }
+    
+    /**
+     * The path of the underlying file.
+     */
+    private Path filepath;
+    
+    /**
+     * A reader for the underlying file, while the relation is opened.
+     */
+    private LineNumberReader source;
+    
+    /**
+     * The types of the relation.
+     */
+    private String[] types;
+    
+    /**
+     * The attributes of the relation.
+     */
+    private String[] names;
 }
