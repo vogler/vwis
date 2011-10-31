@@ -1,5 +1,4 @@
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.nio.charset.Charset;
