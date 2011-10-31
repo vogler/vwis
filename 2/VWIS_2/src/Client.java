@@ -11,7 +11,7 @@ public class Client {
         ClientProxy B = new ClientProxy(
                 new InetSocketAddress("127.0.0.1", 5000));
         try (NLJoin joined = new NLJoin(A, B)) {
-            System.out.println("--- A ⋈ B (remote) ---");
+            System.out.println("--- A |><| B (remote) ---");
             Util.printRelation(joined);
         }
     }
