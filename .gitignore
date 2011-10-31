@@ -1,5 +1,11 @@
+*.pptx
+*.ppt
 *.pdf
 *.aux
 *.log
 *.gz
 *.zip
+.settings
+bin
+.classpath
+.project
