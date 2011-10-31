@@ -1,0 +1,5 @@
+id	name2	zahl3	zahl4
+Integer	String	Float	Double
+2	"Hans"	1.23	3.14
+3	"Peter"	2.23	4.14
+4	"Paul"	3.23	5.14
