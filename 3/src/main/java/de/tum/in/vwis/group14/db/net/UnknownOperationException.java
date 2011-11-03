@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package de.tum.in.vwis.group14.db.net;
+
+/**
+ * Thrown if an unknown operation is requested.
+ */
+public class UnknownOperationException extends Exception {
+
+    /**
+     * Creates a new exception with the specified message.
+     * 
+     * @param message a message
+     */
+    public UnknownOperationException(String message) {
+        super(message);
+    }
+    
+    /**
+     * Creates an exception with the specified message and cause.
+     * 
+     * @param message a message
+     * @param cause the cause
+     */
+    public UnknownOperationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+}
