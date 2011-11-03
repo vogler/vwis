@@ -1,0 +1,4 @@
+intcol	stringcol	floatcol	doublecol
+Integer	String	Float	Double	
+1	"foo"	1.55	10e6
+2	"bar"	2.55	.5
