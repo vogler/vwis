@@ -11,7 +11,7 @@
 
 \begin{document}
 
-\author{Gruppe 12\\Max-Emanuel Hoffmann\\Ralf Vogler\\Sebastian Wiesner}
+\author{Gruppe 14\\Max-Emanuel Hoffmann\\Ralf Vogler\\Sebastian Wiesner}
 \title{Verteilte und Web-Informationssysteme}
 \subtitle{Blatt 2}
 
@@ -29,16 +29,66 @@ Normaler Join:
 t = 2l + \frac{s*k_S}{b}
 \end{align*}
 Es ist zu erkennen, dass die Latenzzeit beim \emph{Bind-Join} einen größeren
-Einfluss hat, da sie proportional zur Größe der Relation $R$ in die 
-Übertragung eingeht, während sie beim normalen Join nur mit einem konstanten 
-Faktor einfließt.
+Einfluss hat, da sie proportional zur Größe der Relation $R$ in die Übertragung
+eingeht, während sie beim normalen Join nur mit einem konstanten Faktor
+einfließt.
 \item Diese Situation kommt vor, wenn Daten aus Fremdsystemen gejoint werden
-müssen.  Eine Übertragung der Relation kommt beispielsweise nicht in Frage, 
-wenn die andere Relation sehr groß ist, oder aus Gründen des Datenschutzes 
-kein Zugriff auf alle Tupel gewährt werden darf.
+  müssen.  Eine Übertragung der Relation kommt beispielsweise nicht in Frage,
+  wenn die andere Relation sehr groß ist, oder aus Gründen des Datenschutzes
+  kein Zugriff auf alle Tupel gewährt werden darf.
 \end{enumerate}
 
 \section*{Aufgabe 2}
-Java, siehe Anhang
+
+Eine Java-Implementierung dieser Aufgabe sowie zwei Dateien mit Test-Relationen
+befinden sich im angehängten ZIP-Archiv.  Im Folgenden die Ausgaben der Klassen
+\texttt{Test} und \texttt{Client}:
+
+\begin{enumerate}
+\item Dem Join-Operator ließe sich noch ein Parameter übergeben, welcher
+  diejenige Spalte beschreibt, über die der Verbund berechnet werden soll.
+\item Die angehängte Lösung verwendet zur Übertragung der Ergebnisse die
+  Serialisierungsklassen der Java-API.  Damit lässt sich die Übertragung
+  einfach implementieren, allerdings kann der Server nur schwer mit anderen
+  Sprachen abgefragt werden.  Es wäre sinnvoller, die Ergebnisse über ein
+  offenes Format wie XML oder JSON zu kommunizieren
+\end{enumerate}
+
+\subsection*{Ausgabe der Programme}
+
+\minisec{Ausgabe von \texttt{Test}}
+
+\begin{verbatim}
+$ java -cp build/classes Test
+--- Relation A ---
+[id, name, zahl1, zahl2]
+[1, Hans, 1.23, 3.14]
+[2, Peter, 2.23, 4.14]
+[3, Paul, 3.23, 5.14]
+
+--- Relation B ---
+[id, name, zahl3, zahl4]
+[1, Hans, 1.23, 3.14]
+[2, Peter, 2.23, 4.14]
+[3, Johann, 3.23, 5.14]
+
+--- A |><| B ---
+[id, name, zahl1, zahl2, zahl3, zahl4]
+[1, Hans, 1.23, 3.14, 1.23, 3.14]
+[2, Peter, 2.23, 4.14, 2.23, 4.14]
+\end{verbatim}
+
+\minisec{Ausgabe von \texttt{Client} und \texttt{Server}}
+
+\begin{verbatim}
+$ java -cp build/classes Server &
+[1] 23738
+$ java -cp build/classes Client
+--- A |><| B (remote) ---
+[id, name, zahl1, zahl2, zahl3, zahl4]
+[1, Hans, 1.23, 3.14, 1.23, 3.14]
+[2, Peter, 2.23, 4.14, 2.23, 4.14]
+$ kill 23738
+\end{verbatim}
 
 \end{document}
