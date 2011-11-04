@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.FileSystems;
 import org.junit.Rule;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -38,23 +39,24 @@ public class TablescanTest {
         this.relation = new Tablescan(this.relationFileName);
 
     }
-
-    @Test
-    public void testOpen() throws Exception {
-        assertArrayEquals(NAMES, this.relation.open());
+    
+    @After
+    public void tearDown() throws IOException {
+        this.relation.close();
     }
 
     @Test
-    public void testOpenReopen() throws Exception {
-        this.relation.open();
+    public void testOpen() throws Exception {
+        assertArrayEquals(NAMES, this.relation.open()); 
+        // test re-opening
         assertArrayEquals(NAMES, this.relation.open());
     }
 
     @Test(expected = TableFormatException.class)
     public void openEmptyFile() throws Exception {
-        final Tablescan empty = new Tablescan(
+        this.relation = new Tablescan(
                 this.testFolder.newFile("empty_file").getPath());
-        empty.open();
+        this.relation.open();
     }
 
     @Test
@@ -71,9 +73,9 @@ public class TablescanTest {
             sink.write(lines.get(1));
             sink.write("\n");
         }
-        final Tablescan empty = new Tablescan(filename);
-        assertArrayEquals(empty.open(), NAMES);
-        assertNull(empty.next());
+        this.relation = new Tablescan(filename);
+        assertArrayEquals(this.relation.open(), NAMES);
+        assertNull(this.relation.next());
     }
 
     @Test
