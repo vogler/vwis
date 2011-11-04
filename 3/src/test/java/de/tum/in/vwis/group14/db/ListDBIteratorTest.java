@@ -76,6 +76,7 @@ public class ListDBIteratorTest {
 
     @Test
     public void testClose() {
+        this.relation.open();
         this.relation.close();
         assertThat(this.relation, isClosed());
     }

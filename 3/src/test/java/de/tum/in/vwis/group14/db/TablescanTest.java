@@ -121,6 +121,7 @@ public class TablescanTest {
 
     @Test
     public void testClose() throws Exception {
+        this.relation.open();
         this.relation.close();
         assertThat(this.relation, isClosed());
     }
