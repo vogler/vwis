@@ -97,7 +97,7 @@ public class NLJoin implements DBIterator {
      * @throws IllegalArgumentException if attributes and tuple have different
      *         sizes
      */
-    Map<String, Object> tupleToMap(final List<String> attributes,
+    private Map<String, Object> tupleToMap(final List<String> attributes,
             final Object[] tuple) {
         if (attributes.size() != tuple.length) {
             throw new IllegalArgumentException("length mismatch");
