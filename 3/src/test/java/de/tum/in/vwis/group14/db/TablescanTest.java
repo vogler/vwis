@@ -16,12 +16,21 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import static org.junit.Assert.*;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static de.tum.in.vwis.group14.db.IsClosed.isClosed;
 
 /**
  * Testcase for tablescan
  */
 public class TablescanTest {
 
+    private Path relationFileName;
+    private Tablescan relation;
+    private final static String[] NAMES =
+            new String[]{"intcol", "stringcol", "floatcol", "doublecol"};
+    private final static Object[] FIRST_ROW = new Object[]{
+        1, "foo", 1.55f, 10e6d};
+    private final static Object[] SECOND_ROW = new Object[]{
+        2, "bar", 2.55f, .5d};
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
@@ -39,7 +48,7 @@ public class TablescanTest {
         this.relation = new Tablescan(this.relationFileName);
 
     }
-    
+
     @After
     public void tearDown() throws IOException {
         this.relation.close();
@@ -47,7 +56,7 @@ public class TablescanTest {
 
     @Test
     public void testOpen() throws Exception {
-        assertArrayEquals(NAMES, this.relation.open()); 
+        assertArrayEquals(NAMES, this.relation.open());
         // test re-opening
         assertArrayEquals(NAMES, this.relation.open());
     }
@@ -113,18 +122,6 @@ public class TablescanTest {
     @Test
     public void testClose() throws Exception {
         this.relation.close();
-        try {
-            this.relation.next();
-            fail("next after close succeeded");
-        } catch (IOException error) {
-        }
+        assertThat(this.relation, isClosed());
     }
-    private Path relationFileName;
-    private Tablescan relation;
-    private final static String[] NAMES =
-            new String[]{"intcol", "stringcol", "floatcol", "doublecol"};
-    private final static Object[] FIRST_ROW = new Object[]{
-        1, "foo", 1.55f, 10e6d};
-    private final static Object[] SECOND_ROW = new Object[]{
-        2, "bar", 2.55f, .5d};
 }

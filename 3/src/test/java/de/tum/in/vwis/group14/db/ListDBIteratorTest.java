@@ -1,12 +1,12 @@
 package de.tum.in.vwis.group14.db;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
+import static de.tum.in.vwis.group14.db.IsClosed.isClosed;
 
 /**
  *
@@ -77,9 +77,6 @@ public class ListDBIteratorTest {
     @Test
     public void testClose() {
         this.relation.close();
-        try {
-            this.relation.next();
-            fail("Operation on closed relation succeeded");
-        } catch (IOException error) {}
+        assertThat(this.relation, isClosed());
     }
 }

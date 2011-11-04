@@ -183,7 +183,7 @@ public class Tablescan implements DBIterator {
     @Override
     public Object[] next() throws IOException, TableFormatException {
         if (this.source == null) {
-            throw new IOException("Relation is closed");
+            throw new IOException("Relation closed");
         }
         return this.parseNextLine();
     }
