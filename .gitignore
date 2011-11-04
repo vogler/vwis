@@ -1,14 +1,18 @@
-*.pptx
-*.ppt
+# latex build files
 *.pdf
 *.aux
 *.log
+# distribution files
 *.gz
 *.zip
+# eclipse files
 .settings
-bin
 .classpath
 .project
-/2/VWIS_2/nbproject/private/
-/2/VWIS_2/build/
-/2/VWIS_2/dist/
+bin/
+# netbeans files
+nbproject/
+build/
+dist/
+# maven files
+target/
