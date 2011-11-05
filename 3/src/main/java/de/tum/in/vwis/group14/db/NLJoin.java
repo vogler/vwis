@@ -18,10 +18,16 @@ public class NLJoin implements DBIterator {
      * 
      * @param left the left hand side relation of the join operation
      * @param right the right hand side relation of the join operation
+     * @throws IllegalArgumentException if left and right reference the same
+     *         object
      */
     public NLJoin(DBIterator left, DBIterator right) {
         this.left = left;
         this.right = right;
+        if (this.left == this.right) {
+            throw new IllegalArgumentException(
+                    "Cannot join iterator with itself");
+        }
     }
 
     /**
