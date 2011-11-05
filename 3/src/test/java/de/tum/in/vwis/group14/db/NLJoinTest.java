@@ -71,4 +71,40 @@ public class NLJoinTest {
         assertThat(this.left, isClosed());
         assertThat(this.right, isClosed());
     }
+
+    @Test
+    public void testLeftSideEmpty() throws Exception {
+        this.left = new ListDBIterator(LEFT_NAMES, new ArrayList<Object[]>());
+        this.relation = new NLJoin(this.left, this.right);
+        assertArrayEquals(JOIN_NAMES, this.relation.open());
+        assertNull(this.relation.next());
+    }
+    
+    @Test
+    public void testEmptySideEmpty() throws Exception {
+        this.right = new ListDBIterator(RIGHT_NAMES, new ArrayList<Object[]>());
+        this.relation = new NLJoin(this.left, this.right);
+        assertArrayEquals(JOIN_NAMES, this.relation.open());
+        assertNull(this.relation.next());
+    }
+    
+    @Test
+    public void testBothSidesEmpty() throws Exception {
+        this.left = new ListDBIterator(LEFT_NAMES, new ArrayList<Object[]>());
+        this.right = new ListDBIterator(RIGHT_NAMES, new ArrayList<Object[]>());
+        this.relation = new NLJoin(this.left, this.right);
+        assertArrayEquals(JOIN_NAMES, this.relation.open());
+        assertNull(this.relation.next());
+    }
+    
+    @Test
+    public void testIdentity() throws Exception {
+        this.right = new ListDBIterator(LEFT_NAMES, LEFT_TUPLES);
+        this.relation = new NLJoin(this.left, this.right);
+        assertArrayEquals(LEFT_NAMES, this.relation.open());
+        assertArrayEquals(LEFT_TUPLES.get(0), this.relation.next());
+        assertArrayEquals(LEFT_TUPLES.get(1), this.relation.next());
+        assertArrayEquals(LEFT_TUPLES.get(2), this.relation.next());
+        assertNull(this.relation.next());
+    }
 }
