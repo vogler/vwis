@@ -73,11 +73,11 @@ public class NLJoin implements DBIterator {
         while ((l = this.left.next()) != null) {
             while ((r = this.right.next()) != null) {
                 final Map<String, Object> joined = this.join(
-                        tupleToMap(this.leftAttributes, l), 
+                        tupleToMap(this.leftAttributes, l),
                         tupleToMap(this.rightAttributes, r));
                 if (joined != null) {
                     List<Object> tuple = new ArrayList<>(joined.size());
-                    for (String attribute: this.allAttributes) {
+                    for (String attribute : this.allAttributes) {
                         tuple.add(joined.get(attribute));
                     }
                     return tuple.toArray();
@@ -108,7 +108,7 @@ public class NLJoin implements DBIterator {
         if (attributes.size() != tuple.length) {
             throw new IllegalArgumentException("length mismatch");
         }
-        
+
         final Map<String, Object> map = new HashMap<>(attributes.size());
         for (int i = 0; i < attributes.size(); ++i) {
             map.put(attributes.get(i), tuple[i]);
@@ -123,7 +123,7 @@ public class NLJoin implements DBIterator {
      * @param r the right tuple
      * @return the joined tuple or null, if the tuples could not be joined
      */
-    private Map<String, Object> join(final Map<String, Object> l, 
+    private Map<String, Object> join(final Map<String, Object> l,
             final Map<String, Object> r) {
         final Map<String, Object> joined = new HashMap<>(
                 this.allAttributes.size());
@@ -136,14 +136,14 @@ public class NLJoin implements DBIterator {
                     // join attributes inequal in relations, cannot join
                     return null;
                 }
-            } 
+            }
             if (leftValue != null) {
                 joined.put(attribute, leftValue);
-            } 
+            }
             if (rightValue != null) {
                 joined.put(attribute, rightValue);
             }
-                    
+
         }
         return joined;
     }
