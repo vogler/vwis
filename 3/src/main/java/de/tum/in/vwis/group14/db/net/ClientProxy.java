@@ -42,7 +42,7 @@ public class ClientProxy implements DBIterator {
         this.socket = new Socket();
         this.socket.connect(this.endpoint);
 
-        // sendTo an open request to the server
+        // send an open request to the server
         Operation.Open.sendTo(socket);
 
         // retrieve the list of attributes
@@ -69,10 +69,10 @@ public class ClientProxy implements DBIterator {
             throw new IOException("Stream closed");
         }
 
-        // sendTo a next request to the server
+        // send a next request to the server
         Operation.Next.sendTo(socket);
 
-        // readFrom the result
+        // read the result
         final ObjectInputStream source = new ObjectInputStream(
                 this.socket.getInputStream());
         final int length = source.readInt();

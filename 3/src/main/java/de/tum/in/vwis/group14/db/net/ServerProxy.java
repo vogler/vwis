@@ -24,10 +24,10 @@ public class ServerProxy implements AutoCloseable {
     /**
      * Sends an array to the client.
      * 
-     * An array is sendTo by first sending its length, and then each of the 
+     * An array is send by first sending its length, and then each of the 
      * contained objects over the network.
      * 
-     * @param array the array to sendTo, or null
+     * @param array the array to send, or null
      * @throws IOException if network connection failed
      */
     private void sendArray(final Object[] array) throws IOException {

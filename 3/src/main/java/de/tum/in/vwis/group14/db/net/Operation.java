@@ -49,9 +49,9 @@ public enum Operation {
     /**
      * Receives an operation from a remote endpoint.
      * 
-     * Attempts to receiveFrom an operation code from the given socket.
+     * Attempts to receive an operation code from the given socket.
      * 
-     * @param socket the socket to receiveFrom the operation from
+     * @param socket the socket to receive the operation from
      * @return the received operation, or null, if end of stream is reached
      * @throws IOException if the network response failed
      * @throws UnknownOperationException if an unknown operation is received
