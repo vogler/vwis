@@ -107,4 +107,9 @@ public class NLJoinTest {
         assertArrayEquals(LEFT_TUPLES.get(2), this.relation.next());
         assertNull(this.relation.next());
     }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testSame() {
+        new NLJoin(this.left, this.left);
+    }
 }
