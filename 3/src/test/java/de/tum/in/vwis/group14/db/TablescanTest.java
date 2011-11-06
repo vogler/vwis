@@ -1,26 +1,27 @@
 package de.tum.in.vwis.group14.db;
 
-import java.io.InputStream;
+import static de.tum.in.vwis.group14.db.IsClosed.isClosed;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.List;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
-import java.nio.file.Files;
 import java.nio.file.FileSystems;
-import org.junit.Rule;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import static org.junit.Assert.*;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static de.tum.in.vwis.group14.db.IsClosed.isClosed;
 
-/**
- * Testcase for tablescan
- */
 public class TablescanTest {
 
     private Path relationFileName;

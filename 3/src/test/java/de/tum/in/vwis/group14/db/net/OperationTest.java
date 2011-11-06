@@ -1,19 +1,16 @@
 package de.tum.in.vwis.group14.db.net;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.List;
 import java.util.ArrayList;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.List;
 
-/**
- *
- * @author lunar
- */
+import org.junit.Test;
+
 public class OperationTest {
 
     private static final byte[] ORDINALS;

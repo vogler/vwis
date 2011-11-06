@@ -1,16 +1,17 @@
 package de.tum.in.vwis.group14.db;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
 import static de.tum.in.vwis.group14.db.IsClosed.isClosed;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
-/**
- *
- */
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 public class ListDBIteratorTest {
 
     private static final String[] NAMES = new String[]{"id", "name"};
@@ -30,22 +31,22 @@ public class ListDBIteratorTest {
     public void setUp() {
         this.relation = new ListDBIterator(NAMES, TUPLES);
     }
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void testNullNames() {
         new ListDBIterator(null, TUPLES);
     }
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void testEmptyNames() {
         new ListDBIterator(new String[] {}, TUPLES);
     }
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void testNullTuples() {
         new ListDBIterator(NAMES, null);
     }
-    
+
     @Test
     public void testEmptyRelation() throws IOException {
         this.relation = new ListDBIterator(
@@ -53,7 +54,7 @@ public class ListDBIteratorTest {
         assertArrayEquals(NAMES, this.relation.open());
         assertNull(this.relation.next());
     }
-    
+
     @Test
     public void testOpen() {
         assertArrayEquals(NAMES, this.relation.open());
@@ -68,7 +69,7 @@ public class ListDBIteratorTest {
         assertArrayEquals(TUPLES.get(1), this.relation.next());
         assertNull(this.relation.next());
     }
-    
+
     @Test(expected=IOException.class)
     public void testNextBeforeOpen() throws IOException {
         this.relation.next();
