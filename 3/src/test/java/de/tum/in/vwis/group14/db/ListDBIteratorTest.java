@@ -14,14 +14,14 @@ import org.junit.Test;
 
 public class ListDBIteratorTest {
 
-    private static final String[] NAMES = new String[]{"id", "name"};
+    private static final String[] NAMES = new String[] { "id", "name" };
     private static final List<Object[]> TUPLES;
     private ListDBIterator relation;
 
     static {
         TUPLES = new ArrayList<>();
-        TUPLES.add(new Object[]{1, "bar"});
-        TUPLES.add(new Object[]{2, "foo"});
+        TUPLES.add(new Object[] { 1, "bar" });
+        TUPLES.add(new Object[] { 2, "foo" });
     }
 
     public ListDBIteratorTest() {
@@ -32,25 +32,24 @@ public class ListDBIteratorTest {
         this.relation = new ListDBIterator(NAMES, TUPLES);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullNames() {
         new ListDBIterator(null, TUPLES);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testEmptyNames() {
         new ListDBIterator(new String[] {}, TUPLES);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullTuples() {
         new ListDBIterator(NAMES, null);
     }
 
     @Test
     public void testEmptyRelation() throws IOException {
-        this.relation = new ListDBIterator(
-                NAMES, new ArrayList<Object[]>());
+        this.relation = new ListDBIterator(NAMES, new ArrayList<Object[]>());
         assertArrayEquals(NAMES, this.relation.open());
         assertNull(this.relation.next());
     }
@@ -70,7 +69,7 @@ public class ListDBIteratorTest {
         assertNull(this.relation.next());
     }
 
-    @Test(expected=IOException.class)
+    @Test(expected = IOException.class)
     public void testNextBeforeOpen() throws IOException {
         this.relation.next();
     }

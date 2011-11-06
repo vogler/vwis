@@ -10,9 +10,11 @@ public class ListDBIterator implements DBIterator {
 
     /**
      * Creates a new iterator for the specified list.
-     * 
-     * @param names the attribute names
-     * @param tuples the tuples to iterate over
+     *
+     * @param names
+     *            the attribute names
+     * @param tuples
+     *            the tuples to iterate over
      */
     public ListDBIterator(String[] names, List<Object[]> tuples) {
         if (names == null) {
@@ -30,11 +32,11 @@ public class ListDBIterator implements DBIterator {
 
     /**
      * Opens the relation.
-     * 
-     * Resets the reference to the current row to the first row.  A subsequent 
-     * invocation of next() consequently returns the first tuple of the 
+     *
+     * Resets the reference to the current row to the first row. A subsequent
+     * invocation of next() consequently returns the first tuple of the
      * relation.
-     * 
+     *
      * @return the attribute names of this relation
      */
     @Override
@@ -45,9 +47,10 @@ public class ListDBIterator implements DBIterator {
 
     /**
      * Gets the next tuple from this relation.
-     * 
+     *
      * @return the next tuple, or null, if there are no further tuples
-     * @throws IOException if the relation is closed
+     * @throws IOException
+     *             if the relation is closed
      */
     @Override
     public Object[] next() throws IOException {
@@ -69,6 +72,7 @@ public class ListDBIterator implements DBIterator {
     public void close() {
         this.current = -1;
     }
+
     /**
      * The attribute names of this relation
      */

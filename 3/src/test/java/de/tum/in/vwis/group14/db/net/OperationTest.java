@@ -51,14 +51,14 @@ public class OperationTest {
         final Operation[] ops = Operation.values();
         final byte unknownOrdinal = (byte) (ops[ops.length - 1].ordinal() + 10);
         final ByteArrayInputStream in = new ByteArrayInputStream(
-                new byte[]{unknownOrdinal});
+                new byte[] { unknownOrdinal });
         Operation.readFrom(in);
     }
 
     @Test
     public void testReadEndOfStream() throws IOException,
             UnknownOperationException {
-        final ByteArrayInputStream in = new ByteArrayInputStream(new byte[]{});
+        final ByteArrayInputStream in = new ByteArrayInputStream(new byte[] {});
         assertNull(Operation.readFrom(in));
     }
 

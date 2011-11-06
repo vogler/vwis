@@ -1,6 +1,7 @@
 package de.tum.in.vwis.group14.db;
 
 import java.io.IOException;
+
 import org.hamcrest.Description;
 
 /**
@@ -10,9 +11,9 @@ public class IsClosed extends org.hamcrest.BaseMatcher<DBIterator> {
 
     /**
      * Creates a new matcher.
-     * 
+     *
      * This is simply a convenience method.
-     * 
+     *
      * @return a new matcher
      */
     public static IsClosed isClosed() {
@@ -27,11 +28,12 @@ public class IsClosed extends org.hamcrest.BaseMatcher<DBIterator> {
 
     /**
      * Matches a closed relation.
-     * 
-     * A relation is closed, if the attempt to call next() on it throws an 
+     *
+     * A relation is closed, if the attempt to call next() on it throws an
      * IOException with message "Relation closed";
-     * 
-     * @param item a closed relation
+     *
+     * @param item
+     *            a closed relation
      * @return true, if item is a closed relation, false otherwise
      */
     @Override
@@ -52,9 +54,10 @@ public class IsClosed extends org.hamcrest.BaseMatcher<DBIterator> {
     }
 
     /**
-     * Adds a description of this object to the given description. 
-     * 
-     * @param description the description to add to
+     * Adds a description of this object to the given description.
+     *
+     * @param description
+     *            the description to add to
      */
     @Override
     public void describeTo(Description description) {

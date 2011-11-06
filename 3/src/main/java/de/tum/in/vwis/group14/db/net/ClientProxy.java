@@ -1,22 +1,24 @@
 package de.tum.in.vwis.group14.db.net;
 
-import de.tum.in.vwis.group14.db.DBIterator;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import de.tum.in.vwis.group14.db.DBIterator;
+
 /**
  * Remote proxy relation.
- * 
+ *
  * This relation provides a proxy relation for a remote relation.
  */
 public class ClientProxy implements DBIterator {
 
     /**
      * Creates a new proxy.
-     * 
-     * @param endpoint the endpoint to connect to
+     *
+     * @param endpoint
+     *            the endpoint to connect to
      */
     public ClientProxy(SocketAddress endpoint) {
         this.endpoint = endpoint;
@@ -25,13 +27,15 @@ public class ClientProxy implements DBIterator {
 
     /**
      * Opens this relation.
-     * 
-     * Etablishes a connection to the remote endpoint and open the remote 
+     *
+     * Etablishes a connection to the remote endpoint and open the remote
      * relation.
-     * 
+     *
      * @return the attributes of the remote relation
-     * @throws IOException if network connection failed
-     * @throws ClassNotFoundException if reading from the connection failed
+     * @throws IOException
+     *             if network connection failed
+     * @throws ClassNotFoundException
+     *             if reading from the connection failed
      */
     @Override
     public String[] open() throws IOException, ClassNotFoundException {
@@ -39,7 +43,7 @@ public class ClientProxy implements DBIterator {
         this.socket.connect(this.endpoint);
 
         // send an open request to the server
-        Operation.Open.sendTo(socket);
+        Operation.Open.sendTo(this.socket);
 
         // retrieve the list of attributes
         final ObjectInputStream source = new ObjectInputStream(
@@ -54,10 +58,12 @@ public class ClientProxy implements DBIterator {
 
     /**
      * Retrieves the next tuple from the remote relation.
-     * 
+     *
      * @return the next tuple, or null, if there are no further tuples
-     * @throws IOException if the network connection failed
-     * @throws ClassNotFoundException if reading from the connection failed
+     * @throws IOException
+     *             if the network connection failed
+     * @throws ClassNotFoundException
+     *             if reading from the connection failed
      */
     @Override
     public Object[] next() throws IOException, ClassNotFoundException {
@@ -66,7 +72,7 @@ public class ClientProxy implements DBIterator {
         }
 
         // send a next request to the server
-        Operation.Next.sendTo(socket);
+        Operation.Next.sendTo(this.socket);
 
         // read the result
         final ObjectInputStream source = new ObjectInputStream(
@@ -86,19 +92,21 @@ public class ClientProxy implements DBIterator {
 
     /**
      * Closes this relation.
-     * 
+     *
      * Closes the relation on the remote side and the socket.
-     * 
-     * @throws IOException if the network connection failed
+     *
+     * @throws IOException
+     *             if the network connection failed
      */
     @Override
     public void close() throws IOException {
         if (this.socket != null) {
-            Operation.Close.sendTo(socket);
+            Operation.Close.sendTo(this.socket);
             this.socket.close();
         }
         this.socket = null;
     }
+
     /**
      * The endpoint to connect to.
      */

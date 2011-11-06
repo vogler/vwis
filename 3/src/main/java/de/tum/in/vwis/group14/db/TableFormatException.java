@@ -9,7 +9,8 @@ public class TableFormatException extends Exception {
     /**
      * Creates an exception with the specified message.
      *
-     * @param message a message
+     * @param message
+     *            a message
      */
     public TableFormatException(String message) {
         super(message);
@@ -18,8 +19,10 @@ public class TableFormatException extends Exception {
     /**
      * Creates an exception with the specified message and cause.
      *
-     * @param message a message
-     * @param cause the cause
+     * @param message
+     *            a message
+     * @param cause
+     *            the cause
      */
     public TableFormatException(String message, Throwable cause) {
         super(message, cause);

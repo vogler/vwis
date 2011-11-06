@@ -26,12 +26,12 @@ public class TablescanTest {
 
     private Path relationFileName;
     private Tablescan relation;
-    private final static String[] NAMES =
-            new String[]{"intcol", "stringcol", "floatcol", "doublecol"};
-    private final static Object[] FIRST_ROW = new Object[]{
-        1, "foo", 1.55f, 10e6d};
-    private final static Object[] SECOND_ROW = new Object[]{
-        2, "bar", 2.55f, .5d};
+    private final static String[] NAMES = new String[] { "intcol", "stringcol",
+            "floatcol", "doublecol" };
+    private final static Object[] FIRST_ROW = new Object[] { 1, "foo", 1.55f,
+            10e6d };
+    private final static Object[] SECOND_ROW = new Object[] { 2, "bar", 2.55f,
+            .5d };
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
@@ -64,20 +64,20 @@ public class TablescanTest {
 
     @Test(expected = TableFormatException.class)
     public void openEmptyFile() throws Exception {
-        this.relation = new Tablescan(
-                this.testFolder.newFile("empty_file").getPath());
+        this.relation = new Tablescan(this.testFolder.newFile("empty_file")
+                .getPath());
         this.relation.open();
     }
 
     @Test
     public void testEmptyRelation() throws Exception {
         final Charset utf8 = Charset.forName("UTF-8");
-        final List<String> lines = Files.readAllLines(
-                this.relationFileName, utf8);
+        final List<String> lines = Files.readAllLines(this.relationFileName,
+                utf8);
         final Path filename = FileSystems.getDefault().getPath(
                 this.testFolder.getRoot().getPath(), "empty_relation");
-        try (final BufferedWriter sink =
-                        Files.newBufferedWriter(filename, utf8)) {
+        try (final BufferedWriter sink = Files
+                .newBufferedWriter(filename, utf8)) {
             sink.write(lines.get(0));
             sink.write("\n");
             sink.write(lines.get(1));

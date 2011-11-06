@@ -108,15 +108,14 @@ public class TestClientServer {
     @Test
     public void testNext() throws IOException, ClassNotFoundException {
         this.client.open();
-        for (final Object[] tuple: this.tuples) {
+        for (final Object[] tuple : this.tuples) {
             assertArrayEquals(tuple, this.client.next());
         }
         assertNull(this.client.next());
     }
 
     @Test(expected = IOException.class)
-    public void testNextBeforeOpen() throws IOException,
-            ClassNotFoundException {
+    public void testNextBeforeOpen() throws IOException, ClassNotFoundException {
         this.client.next();
     }
 

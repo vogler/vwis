@@ -13,68 +13,73 @@ import java.util.List;
  * Load a table from a file.
  */
 public class Tablescan implements DBIterator {
-    
+
     /**
      * Supported column types.
      */
-    private enum Type {             
+    private enum Type {
         /**
          * A string column.
-         * 
+         *
          * Parses into java.lang.String objects.
          */
         String() {
+            @Override
             public Object parse(String value) {
                 return value.replaceAll("^\"|\"$", "");
             }
         },
-        
+
         /**
          * An integral column.
-         * 
+         *
          * Parses into java.lang.Integer objects.
          */
         Integer() {
+            @Override
             public Object parse(String value) {
                 return java.lang.Integer.valueOf(value);
             }
         },
-        
+
         /**
          * A floating point column.
          *
          * Parses into java.lang.Float objects.
          */
         Float() {
+            @Override
             public Object parse(String value) {
                 return java.lang.Float.valueOf(value);
             }
         },
-        
+
         /**
          * A double precision floating point column.
-         * 
+         *
          * Parses into java.lang.Double objects.
          */
         Double() {
+            @Override
             public Object parse(String value) {
                 return java.lang.Double.valueOf(value);
             }
         };
-        
+
         /**
          * Parses a string value into an object of the column type.
-         * 
+         *
          * @param value
-         * @return 
+         * @return
          */
         public abstract Object parse(String value);
     }
 
     /**
      * Loads a table from the given file.
-     * 
-     * @param filename the file to load
+     *
+     * @param filename
+     *            the file to load
      */
     public Tablescan(final String filename) {
         this(FileSystems.getDefault().getPath(filename));
@@ -82,8 +87,9 @@ public class Tablescan implements DBIterator {
 
     /**
      * Loads a table from the given file.
-     * 
-     * @param filepath the file to load
+     *
+     * @param filepath
+     *            the file to load
      */
     public Tablescan(final Path filepath) {
         this.filepath = filepath;
@@ -92,13 +98,15 @@ public class Tablescan implements DBIterator {
 
     /**
      * Parses the header.
-     * 
-     * The header consists of two lines.  The first line provides the names of
-     * the attributes of the table separated by TAB characters.  The second line
+     *
+     * The header consists of two lines. The first line provides the names of
+     * the attributes of the table separated by TAB characters. The second line
      * defines the types of each row, again separated by TAB characters.
-     * 
-     * @throws IOException if reading the file failed
-     * @throws TableFormatException if the header has an invalid format
+     *
+     * @throws IOException
+     *             if reading the file failed
+     * @throws TableFormatException
+     *             if the header has an invalid format
      */
     private void parseHeader() throws IOException, TableFormatException {
         final String namesHeader = this.source.readLine();
@@ -108,14 +116,14 @@ public class Tablescan implements DBIterator {
         }
         this.names = namesHeader.split("\t");
         this.types = new ArrayList<>(this.names.length);
-        for (final String typeName: typesHeader.split("\t")) {
+        for (final String typeName : typesHeader.split("\t")) {
             try {
                 this.types.add(Type.valueOf(typeName));
             } catch (IllegalArgumentException error) {
-                throw new TableFormatException(
-                        String.format("Unknown type %s", typeName), error);
+                throw new TableFormatException(String.format("Unknown type %s",
+                        typeName), error);
             }
-            
+
         }
         if (this.names.length != this.types.size()) {
             throw new TableFormatException("Mismatching header length");
@@ -124,14 +132,16 @@ public class Tablescan implements DBIterator {
 
     /**
      * Parses the next line into a typed tuple.
-     * 
+     *
      * A line contains values for each column of the relation separated by TAB
-     * characters.  Each value is parsed according to the type defined for the
+     * characters. Each value is parsed according to the type defined for the
      * column in the header.
-     * 
+     *
      * @return the parsed tuple, or null, if there are no further lines
-     * @throws IOException if reading of the line failed
-     * @throws TableFormatException if the line has an invalid format
+     * @throws IOException
+     *             if reading of the line failed
+     * @throws TableFormatException
+     *             if the line has an invalid format
      */
     private Object[] parseNextLine() throws TableFormatException, IOException {
         final String line = this.source.readLine();
@@ -141,9 +151,8 @@ public class Tablescan implements DBIterator {
 
         final String[] values = line.split("\t");
         if (values.length != this.names.length) {
-            throw new TableFormatException(
-                    String.format("Length mismatch in line %s",
-                    this.source.getLineNumber()));
+            throw new TableFormatException(String.format(
+                    "Length mismatch in line %s", this.source.getLineNumber()));
 
         }
 
@@ -157,13 +166,16 @@ public class Tablescan implements DBIterator {
 
     /**
      * Opens the relation.
-     * 
+     *
      * This method opens the underlying file, and parses its header.
-     * 
+     *
      * @return the names of the attributes of this table
-     * @throws IOException if opening or reading the file failed
-     * @throws TableFormatException if the header has an invalid format
+     * @throws IOException
+     *             if opening or reading the file failed
+     * @throws TableFormatException
+     *             if the header has an invalid format
      */
+    @Override
     public String[] open() throws IOException, TableFormatException {
         this.close();
         this.source = new LineNumberReader(Files.newBufferedReader(
@@ -174,11 +186,13 @@ public class Tablescan implements DBIterator {
 
     /**
      * Gets the next tuple in this relation.
-     * 
-     * @return the next tuple, or null, if there is no further tuple in the 
+     *
+     * @return the next tuple, or null, if there is no further tuple in the
      *         relation
-     * @throws IOException if reading of the file failed
-     * @throws TableFormatException if the line has an invalid format
+     * @throws IOException
+     *             if reading of the file failed
+     * @throws TableFormatException
+     *             if the line has an invalid format
      */
     @Override
     public Object[] next() throws IOException, TableFormatException {
@@ -190,8 +204,9 @@ public class Tablescan implements DBIterator {
 
     /**
      * Closes this relation.
-     * 
-     * @throws IOException if closing failed
+     *
+     * @throws IOException
+     *             if closing failed
      */
     @Override
     public void close() throws IOException {
@@ -200,22 +215,22 @@ public class Tablescan implements DBIterator {
         }
         this.source = null;
     }
-    
+
     /**
      * The path of the underlying file.
      */
     private Path filepath;
-    
+
     /**
      * A reader for the underlying file, while the relation is opened.
      */
     private LineNumberReader source;
-    
+
     /**
      * The types of the relation.
      */
     private List<Type> types;
-    
+
     /**
      * The attributes of the relation.
      */
