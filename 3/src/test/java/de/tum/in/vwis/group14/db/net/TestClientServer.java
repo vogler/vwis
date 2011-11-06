@@ -1,30 +1,33 @@
 package de.tum.in.vwis.group14.db.net;
 
-import de.tum.in.vwis.group14.db.DBIterator;
-import de.tum.in.vwis.group14.db.ListDBIterator;
 import static de.tum.in.vwis.group14.db.IsClosed.isClosed;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.channels.ClosedByInterruptException;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import de.tum.in.vwis.group14.db.DBIterator;
+import de.tum.in.vwis.group14.db.ListDBIterator;
 
 public class TestClientServer {
 
-    private final static String[] NAMES = new String[]{"id", "name"};
-    private final static Object[][] TUPLES = new Object[][]{
-        new Object[]{1, "foo"}, new Object[]{2, "bar"}
-    };
+    private static final int NUMBER_OF_TUPLES = 100;
+    private static final String[] NAMES = new String[] { "id", "name" };
+    private List<Object[]> tuples;
     private ServerThread server;
     private ListDBIterator relation;
     private ClientProxy client;
@@ -32,8 +35,8 @@ public class TestClientServer {
     private static class ServerThread extends Thread {
 
         private Exception exception;
-        private ServerSocketChannel server;
-        private DBIterator relation;
+        private final ServerSocketChannel server;
+        private final DBIterator relation;
 
         public ServerThread(DBIterator relation) throws IOException {
             this.relation = relation;
@@ -53,8 +56,8 @@ public class TestClientServer {
         public void run() {
             try {
                 final SocketChannel client = this.server.accept();
-                final ServerProxy proxy = new ServerProxy(
-                        client.socket(), this.relation);
+                final ServerProxy proxy = new ServerProxy(client.socket(),
+                        this.relation);
                 proxy.serveForever();
                 this.relation.close();
                 return;
@@ -72,12 +75,18 @@ public class TestClientServer {
 
     @Before
     public void setUp() throws IOException {
-        this.relation = new ListDBIterator(
-                NAMES, new ArrayList<>(Arrays.asList(TUPLES)));
+        this.tuples = new ArrayList<>();
+        final Random rng = new Random();
+        for (int i = 0; i < NUMBER_OF_TUPLES; ++i) {
+            final Object[] tuple = new Object[] { i,
+                    new BigInteger(32, rng).toString() };
+            this.tuples.add(tuple);
+        }
+        this.relation = new ListDBIterator(NAMES, this.tuples);
         this.server = new ServerThread(this.relation);
         this.server.start();
-        this.client = new ClientProxy(
-                new InetSocketAddress(this.server.getPort()));
+        this.client = new ClientProxy(new InetSocketAddress(
+                this.server.getPort()));
     }
 
     @After
@@ -89,7 +98,7 @@ public class TestClientServer {
             throw this.server.getException();
         }
     }
- 
+
     @Test
     public void testOpen() throws IOException, ClassNotFoundException {
         final String[] names = this.client.open();
@@ -99,8 +108,9 @@ public class TestClientServer {
     @Test
     public void testNext() throws IOException, ClassNotFoundException {
         this.client.open();
-        assertArrayEquals(TUPLES[0], this.client.next());
-        assertArrayEquals(TUPLES[1], this.client.next());
+        for (final Object[] tuple: this.tuples) {
+            assertArrayEquals(tuple, this.client.next());
+        }
         assertNull(this.client.next());
     }
 
