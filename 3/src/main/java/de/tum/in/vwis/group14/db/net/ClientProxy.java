@@ -62,7 +62,7 @@ public class ClientProxy implements DBIterator {
     @Override
     public Object[] next() throws IOException, ClassNotFoundException {
         if (this.socket == null) {
-            throw new IOException("Stream closed");
+            throw new IOException("Relation closed");
         }
 
         // send a next request to the server
