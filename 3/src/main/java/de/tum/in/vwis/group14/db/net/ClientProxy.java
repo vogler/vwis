@@ -13,10 +13,6 @@ import java.net.SocketAddress;
  */
 public class ClientProxy implements DBIterator {
 
-    private static final int OP_OPEN = 0;
-    private static final int OP_NEXT = 1;
-    private static final int OP_CLOSE = 2;
-
     /**
      * Creates a new proxy.
      * 
