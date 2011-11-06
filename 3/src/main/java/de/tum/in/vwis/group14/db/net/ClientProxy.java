@@ -102,9 +102,9 @@ public class ClientProxy implements DBIterator {
     /**
      * The endpoint to connect to.
      */
-    SocketAddress endpoint;
+    private SocketAddress endpoint;
     /**
      * The socket, or null if the relation is closed.
      */
-    Socket socket;
+    private Socket socket;
 }
