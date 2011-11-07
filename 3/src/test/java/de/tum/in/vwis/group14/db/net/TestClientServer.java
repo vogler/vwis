@@ -2,9 +2,11 @@ package de.tum.in.vwis.group14.db.net;
 
 import static de.tum.in.vwis.group14.db.IsClosed.isClosed;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -101,8 +103,10 @@ public class TestClientServer {
 
     @Test
     public void testOpen() throws IOException, ClassNotFoundException {
+        assertTrue(this.client.isClosed());
         final String[] names = this.client.open();
         assertArrayEquals(NAMES, names);
+        assertFalse(this.client.isClosed());
     }
 
     @Test
@@ -122,8 +126,10 @@ public class TestClientServer {
     @Test
     public void testClose() throws IOException, ClassNotFoundException {
         this.client.open();
+        assertFalse(this.client.isClosed());
         assertNotNull(this.client.next());
         this.client.close();
         assertThat(this.client, isClosed());
+        assertTrue(this.client.isClosed());
     }
 }

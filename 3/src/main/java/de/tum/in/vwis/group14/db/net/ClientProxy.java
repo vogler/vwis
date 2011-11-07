@@ -67,7 +67,7 @@ public class ClientProxy implements DBIterator {
      */
     @Override
     public Object[] next() throws IOException, ClassNotFoundException {
-        if (this.socket == null) {
+        if (this.isClosed()) {
             throw new IOException("Relation closed");
         }
 
@@ -100,7 +100,7 @@ public class ClientProxy implements DBIterator {
      */
     @Override
     public void close() throws IOException {
-        if (this.socket != null) {
+        if (!this.isClosed()) {
             Operation.Close.sendTo(this.socket);
             this.socket.close();
         }
@@ -108,9 +108,18 @@ public class ClientProxy implements DBIterator {
     }
 
     /**
+     * Whether this relation is closed.
+     *
+     * @return true, if the relation is closed, false otherwise
+     */
+    public boolean isClosed() {
+        return this.socket == null || this.socket.isClosed();
+    }
+
+    /**
      * The endpoint to connect to.
      */
-    private SocketAddress endpoint;
+    private final SocketAddress endpoint;
     /**
      * The socket, or null if the relation is closed.
      */
