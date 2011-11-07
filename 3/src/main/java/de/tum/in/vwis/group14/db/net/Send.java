@@ -1,6 +1,7 @@
 package de.tum.in.vwis.group14.db.net;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
@@ -23,9 +24,9 @@ public class Send implements AutoCloseable {
 
     /**
      * Creates a new sender.
-     * 
+     *
      * The sender sends the given relation to the given client.
-     * 
+     *
      * @param client
      *            the client to send to
      * @param relation
@@ -38,7 +39,7 @@ public class Send implements AutoCloseable {
 
     /**
      * Sends a single object to the client and flushes the stream.
-     * 
+     *
      * @param obj
      *            the object to send
      * @throws IOException
@@ -52,8 +53,29 @@ public class Send implements AutoCloseable {
     }
 
     /**
+     * Sends the specified amount of tuples to the remote side.
+     *
+     * @param tuplesToSend
+     *            the amount of tuples to send
+     * @throws IOException
+     *             if network access failed
+     * @throws Exception
+     *             if retrieving the next tuple from the underlying relation
+     *             failed
+     */
+    private void sendTuples(int tuplesToSend) throws Exception {
+        final ObjectOutputStream sink = new ObjectOutputStream(
+                this.client.getOutputStream());
+        while (tuplesToSend > 0) {
+            sink.writeObject(this.relation.next());
+            tuplesToSend--;
+        }
+        sink.flush();
+    }
+
+    /**
      * Receives and handles a single request.
-     * 
+     *
      * @throws Exception
      */
     public void handleRequest() throws Exception {
@@ -70,6 +92,12 @@ public class Send implements AutoCloseable {
             case Next:
                 this.sendObject(this.relation.next());
                 break;
+            case MultipleNext:
+                final ObjectInputStream source = new ObjectInputStream(
+                        this.client.getInputStream());
+                final int tuplesToSend = source.readInt();
+                this.sendTuples(tuplesToSend);
+                break;
             case Close:
                 this.close();
                 break;
@@ -83,7 +111,7 @@ public class Send implements AutoCloseable {
 
     /**
      * Closes this send operator.
-     * 
+     *
      * @throws Exception
      *             if closing the underlying relation failed
      * @throws IOException
@@ -97,7 +125,7 @@ public class Send implements AutoCloseable {
 
     /**
      * Whether this sender is closed or not.
-     * 
+     *
      * @return true, if the sender is closed, false otherwise
      */
     public boolean isClosed() {

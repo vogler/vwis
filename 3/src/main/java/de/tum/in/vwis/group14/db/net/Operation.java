@@ -11,13 +11,19 @@ import java.net.Socket;
 public enum Operation {
 
     /**
-     * Opens a remote collection.
+     * Opens a remote relation.
      */
     Open,
     /**
-     * Requests the next tuple from a remote collection.
+     * Requests the next tuple from a remote relation.
      */
     Next,
+
+    /**
+     * Receive multiple next tuples from the remote relation.
+     */
+    MultipleNext,
+
     /**
      * Closes the remote collection.
      */
