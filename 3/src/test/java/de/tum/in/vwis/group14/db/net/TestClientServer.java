@@ -58,8 +58,8 @@ public class TestClientServer {
         public void run() {
             try {
                 final SocketChannel client = this.server.accept();
-                final ServerProxy proxy = new ServerProxy(client.socket(),
-                        this.relation);
+                final ServerProxy proxy = new ServerProxy(new Send(
+                        client.socket(), this.relation));
                 proxy.serveForever();
                 this.relation.close();
                 return;
@@ -87,8 +87,8 @@ public class TestClientServer {
         this.relation = new ListDBIterator(NAMES, this.tuples);
         this.server = new ServerThread(this.relation);
         this.server.start();
-        this.client = new ClientProxy(new InetSocketAddress(
-                this.server.getPort()));
+        this.client = new ClientProxy(new Receive(new InetSocketAddress(
+                this.server.getPort())));
     }
 
     @After

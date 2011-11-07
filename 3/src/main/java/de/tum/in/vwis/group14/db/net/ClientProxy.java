@@ -1,36 +1,36 @@
 package de.tum.in.vwis.group14.db.net;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.Socket;
-import java.net.SocketAddress;
 
 import de.tum.in.vwis.group14.db.DBIterator;
 
 /**
  * Remote proxy relation.
- *
+ * 
  * This relation provides a proxy relation for a remote relation.
  */
 public class ClientProxy implements DBIterator {
+    /**
+     * The receiver to receive data with.
+     */
+    private final Receive receiver;
 
     /**
      * Creates a new proxy.
-     *
-     * @param endpoint
-     *            the endpoint to connect to
+     * 
+     * @param receiver
+     *            the receiver to receive from
      */
-    public ClientProxy(SocketAddress endpoint) {
-        this.endpoint = endpoint;
-        this.socket = null;
+    public ClientProxy(final Receive receiver) {
+        this.receiver = receiver;
     }
 
     /**
      * Opens this relation.
-     *
+     * 
      * Etablishes a connection to the remote endpoint and open the remote
      * relation.
-     *
+     * 
      * @return the attributes of the remote relation
      * @throws IOException
      *             if network connection failed
@@ -39,26 +39,12 @@ public class ClientProxy implements DBIterator {
      */
     @Override
     public String[] open() throws IOException, ClassNotFoundException {
-        this.socket = new Socket();
-        this.socket.connect(this.endpoint);
-
-        // send an open request to the server
-        Operation.Open.sendTo(this.socket);
-
-        // retrieve the list of attributes
-        final ObjectInputStream source = new ObjectInputStream(
-                this.socket.getInputStream());
-        final int length = source.readInt();
-        final String[] names = new String[length];
-        for (int i = 0; i < length; ++i) {
-            names[i] = (String) source.readObject();
-        }
-        return names;
+        return this.receiver.open();
     }
 
     /**
      * Retrieves the next tuple from the remote relation.
-     *
+     * 
      * @return the next tuple, or null, if there are no further tuples
      * @throws IOException
      *             if the network connection failed
@@ -67,61 +53,29 @@ public class ClientProxy implements DBIterator {
      */
     @Override
     public Object[] next() throws IOException, ClassNotFoundException {
-        if (this.isClosed()) {
-            throw new IOException("Relation closed");
-        }
-
-        // send a next request to the server
-        Operation.Next.sendTo(this.socket);
-
-        // read the result
-        final ObjectInputStream source = new ObjectInputStream(
-                this.socket.getInputStream());
-        final int length = source.readInt();
-        if (length < 0) {
-            // server doesn't have no tuples anymore
-            return null;
-        } else {
-            final Object[] values = new Object[length];
-            for (int i = 0; i < length; ++i) {
-                values[i] = source.readObject();
-            }
-            return values;
-        }
+        return this.receiver.next();
     }
 
     /**
      * Closes this relation.
-     *
+     * 
      * Closes the relation on the remote side and the socket.
-     *
+     * 
      * @throws IOException
      *             if the network connection failed
      */
     @Override
     public void close() throws IOException {
-        if (!this.isClosed()) {
-            Operation.Close.sendTo(this.socket);
-            this.socket.close();
-        }
-        this.socket = null;
+        this.receiver.close();
     }
 
     /**
      * Whether this relation is closed.
-     *
+     * 
      * @return true, if the relation is closed, false otherwise
      */
     public boolean isClosed() {
-        return this.socket == null || this.socket.isClosed();
+        return this.receiver.isClosed();
     }
 
-    /**
-     * The endpoint to connect to.
-     */
-    private final SocketAddress endpoint;
-    /**
-     * The socket, or null if the relation is closed.
-     */
-    private Socket socket;
 }

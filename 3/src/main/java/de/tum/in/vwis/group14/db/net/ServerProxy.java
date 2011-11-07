@@ -1,112 +1,46 @@
 package de.tum.in.vwis.group14.db.net;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-
-import de.tum.in.vwis.group14.db.DBIterator;
 
 /**
  * Serves a relation over network.
  */
 public class ServerProxy implements AutoCloseable {
 
-    /**
-     * Creates a new proxy.
-     *
-     * @param client
-     *            the client to serve the relation to
-     * @param relation
-     *            the relation to serve
-     */
-    public ServerProxy(Socket client, DBIterator relation) {
-        this.relation = relation;
-        this.client = client;
-    }
+    private final Send sender;
 
     /**
-     * Sends an array to the client.
-     *
-     * An array is send by first sending its length, and then each of the
-     * contained objects over the network.
-     *
-     * @param array
-     *            the array to send, or null
-     * @throws IOException
-     *             if network connection failed
+     * Creates a new proxy.
+     * 
+     * @param sender
+     *            the send operator to use
      */
-    private void sendArray(final Object[] array) throws IOException {
-        final ObjectOutputStream sink = new ObjectOutputStream(
-                this.client.getOutputStream());
-        if (array == null) {
-            sink.writeInt(-1);
-        } else {
-            sink.writeInt(array.length);
-            for (final Object obj : array) {
-                sink.writeObject(obj);
-            }
-        }
-        sink.flush();
+    public ServerProxy(Send sender) {
+        this.sender = sender;
     }
 
     /**
      * Serves the relation to the client.
-     *
+     * 
      * @throws IOException
      *             if the network connection failed
      * @throws Exception
      *             if access to the underlying relation failed
      */
     public void serveForever() throws IOException, Exception {
-        while (true) {
-            try {
-                final Operation operation = Operation.receiveFrom(this.client);
-                if (operation == null) {
-                    // end of stream
-                    this.close();
-                    return;
-                }
-                switch (operation) {
-                case Open:
-                    this.sendArray(this.relation.open());
-                    break;
-                case Next:
-                    this.sendArray(this.relation.next());
-                    break;
-                case Close:
-                    this.close();
-                    return;
-
-                }
-            } catch (UnknownOperationException error) {
-                ObjectOutputStream sink = new ObjectOutputStream(
-                        this.client.getOutputStream());
-                sink.writeObject(error.getMessage());
-            }
+        while (!this.sender.isClosed()) {
+            this.sender.handleRequest();
         }
     }
 
     /**
      * Closes this server proxy.
-     *
+     * 
      * @throws Exception
-     *             if closing the underlying relation failed
-     * @throws IOException
-     *             if closing the underlying socket failed
+     *             if closing the underlying sender failed
      */
     @Override
-    public void close() throws Exception, IOException {
-        this.relation.close();
-        this.client.close();
+    public void close() throws Exception {
+        this.sender.close();
     }
-
-    /**
-     * The underlying relation.
-     */
-    private DBIterator relation;
-
-    /**
-     * The remote client.
-     */
-    private Socket client;
 }

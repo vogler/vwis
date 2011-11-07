@@ -21,7 +21,7 @@ public class TablescanServer implements Closeable {
 
         /**
          * Creates a new proxy runnable.
-         *
+         * 
          * @param client
          *            the client to serve
          * @param relation
@@ -34,21 +34,21 @@ public class TablescanServer implements Closeable {
 
         @Override
         public void run() {
-            try (final ServerProxy proxy = new ServerProxy(this.client,
-                    this.relation)) {
+            try (final ServerProxy proxy = new ServerProxy(new Send(
+                    this.client, this.relation))) {
                 proxy.serveForever();
             } catch (Exception exc) {
                 exc.printStackTrace();
             }
         }
 
-        private DBIterator relation;
-        private Socket client;
+        private final DBIterator relation;
+        private final Socket client;
     }
 
     /**
      * Creates a new serves.
-     *
+     * 
      * @param endpoint
      *            the endpoint to bind to
      * @param filename
@@ -62,7 +62,7 @@ public class TablescanServer implements Closeable {
 
     /**
      * Closes the server.
-     *
+     * 
      * @throws IOException
      *             if network connection failed
      */
@@ -76,7 +76,7 @@ public class TablescanServer implements Closeable {
 
     /**
      * Serves the relation forever.
-     *
+     * 
      * @throws IOException
      *             if network connection failed
      */
@@ -95,12 +95,12 @@ public class TablescanServer implements Closeable {
     /**
      * The endpoint to bind to.
      */
-    private SocketAddress endpoint;
+    private final SocketAddress endpoint;
 
     /**
      * The filename from which to read the relation.
      */
-    private String filename;
+    private final String filename;
 
     /**
      * The server socket, or null, if the server is closed.
