@@ -6,6 +6,23 @@
   <artifactId>3</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
+  <developers>
+    <developer>
+      <id>max.hoffman</id>
+      <name>Max Hoffmann</name>
+      <email>emanuel.hoffmann@gmx.de</email>
+    </developer>
+    <developer>
+      <id>ralf.vogler</id>
+      <name>Ralf Vogler</name>
+      <email>ralf.vogler@gmail.com</email>
+    </developer>
+    <developer>
+      <id>sebastian.wiesner</id>
+      <name>Sebastian Wiesner</name>
+      <email>basti.wiesner@mytum.de</email>
+    </developer>
+  </developers>
 
   <name>3</name>
   <url>http://maven.apache.org</url>
@@ -34,4 +51,8 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <organization>
+  	<name>Gruppe 14</name>
+  </organization>
+  <description>Solution for sheet 3</description>
 </project>
