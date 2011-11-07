@@ -21,7 +21,7 @@ public class TablescanServer implements Closeable {
 
         /**
          * Creates a new proxy runnable.
-         * 
+         *
          * @param client
          *            the client to serve
          * @param relation
@@ -48,7 +48,7 @@ public class TablescanServer implements Closeable {
 
     /**
      * Creates a new serves.
-     * 
+     *
      * @param endpoint
      *            the endpoint to bind to
      * @param filename
@@ -62,7 +62,7 @@ public class TablescanServer implements Closeable {
 
     /**
      * Closes the server.
-     * 
+     *
      * @throws IOException
      *             if network connection failed
      */
@@ -76,7 +76,7 @@ public class TablescanServer implements Closeable {
 
     /**
      * Serves the relation forever.
-     * 
+     *
      * @throws IOException
      *             if network connection failed
      */

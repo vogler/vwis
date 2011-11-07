@@ -11,7 +11,7 @@ public class ServerProxy implements AutoCloseable {
 
     /**
      * Creates a new proxy.
-     * 
+     *
      * @param sender
      *            the send operator to use
      */
@@ -21,7 +21,7 @@ public class ServerProxy implements AutoCloseable {
 
     /**
      * Serves the relation to the client.
-     * 
+     *
      * @throws IOException
      *             if the network connection failed
      * @throws Exception
@@ -35,7 +35,7 @@ public class ServerProxy implements AutoCloseable {
 
     /**
      * Closes this server proxy.
-     * 
+     *
      * @throws Exception
      *             if closing the underlying sender failed
      */
