@@ -27,7 +27,7 @@ import de.tum.in.vwis.group14.db.ListDBIterator;
 
 public class TestClientServer {
 
-    private static final int NUMBER_OF_TUPLES = 100;
+    private static final int NUMBER_OF_TUPLES = 1000;
     private static final String[] NAMES = new String[] { "id", "name" };
     private List<Object[]> tuples;
     private ServerThread server;
@@ -102,7 +102,7 @@ public class TestClientServer {
     }
 
     @Test
-    public void testOpen() throws IOException, ClassNotFoundException {
+    public void testOpen() throws Exception {
         assertTrue(this.client.isClosed());
         final String[] names = this.client.open();
         assertArrayEquals(NAMES, names);
@@ -110,7 +110,7 @@ public class TestClientServer {
     }
 
     @Test
-    public void testNext() throws IOException, ClassNotFoundException {
+    public void testNext() throws Exception {
         this.client.open();
         for (final Object[] tuple : this.tuples) {
             assertArrayEquals(tuple, this.client.next());
@@ -119,12 +119,12 @@ public class TestClientServer {
     }
 
     @Test(expected = IOException.class)
-    public void testNextBeforeOpen() throws IOException, ClassNotFoundException {
+    public void testNextBeforeOpen() throws Exception {
         this.client.next();
     }
 
     @Test
-    public void testClose() throws IOException, ClassNotFoundException {
+    public void testClose() throws Exception {
         this.client.open();
         assertFalse(this.client.isClosed());
         assertNotNull(this.client.next());
