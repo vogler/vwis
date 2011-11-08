@@ -27,7 +27,15 @@
 	<name>3</name>
 	<url>http://maven.apache.org</url>
 	<build>
-		<finalName>VWIS ${project.organization.name}: Blatt ${project.artifactId} (Volger, Hoffmann, Wiesner)</finalName>
+		<finalName>VWIS ${project.organization.name} Blatt ${project.artifactId} (Volger, Hoffmann, Wiesner)</finalName>
+		<resources>
+			<resource>
+				<directory>${basedir}</directory>
+				<includes>
+					<include>*.pdf</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
