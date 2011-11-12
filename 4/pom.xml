@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>vwis.group14</groupId>
+  <artifactId>4</artifactId>
+  <version>0.1</version>
+  <description>Solution for sheet 4</description>
+  <developers>
+		<developer>
+			<id>max.hoffman</id>
+			<name>Max Hoffmann</name>
+			<email>emanuel.hoffmann@gmx.de</email>
+		</developer>
+		<developer>
+			<id>ralf.vogler</id>
+			<name>Ralf Vogler</name>
+			<email>ralf.vogler@gmail.com</email>
+		</developer>
+		<developer>
+			<id>sebastian.wiesner</id>
+			<name>Sebastian Wiesner</name>
+			<email>basti.wiesner@mytum.de</email>
+		</developer>
+	</developers>
+	<organization>
+		<name>Gruppe 14</name>
+	</organization>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<build>
+		<finalName>VWIS ${project.organization.name} Blatt ${project.artifactId} (Volger, Hoffmann, Wiesner)</finalName>
+		<directory>${project.basedir}/bin</directory>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+		<testSourceDirectory>${project.basedir}/tests</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>${project.basedir}</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>project</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
