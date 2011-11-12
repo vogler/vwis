@@ -1,0 +1,6 @@
+land_id	land	flaeche
+Integer	String	Double
+1	" D "	357111.91
+2	" A "	83878.99
+3	"USA"	9629091.00
+1	"CH "	41285.00

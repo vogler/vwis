@@ -1,0 +1,8 @@
+pers_id	vorname	name	land_id	land	note
+Integer	String	String	Integer	String	Float
+1	"Hans"	"Haus"	1	" D "	5.0
+2	"Thomas"	"Gruen"	2	" D "	3.7
+3	"Peter"	"Jackson"	3	"USA"	2.0
+4	"Toni"	"Anton"	1	"CH "	1.7
+5	"Karl"	"Hainz"	1	" D "	1.0
+6	"Ridley"	"Scott"	3	"USA"	2.7
