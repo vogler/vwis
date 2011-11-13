@@ -19,23 +19,20 @@
 \maketitle
 
 \section*{Aufgabe 1}
-\begin{displaymath}
-ABT_1 = \sigma_{(100 \leq AbtNr \leq 220) \vee (AbtNr = 250)} ABT
-\end{displaymath}
-\begin{displaymath}
-ABT_2 = \sigma_{(221 \leq AbtNr \leq 370) \wedge (AbtNr \neq 250)} ABT
-\end{displaymath}
-\begin{displaymath}
-ABT:3 = \sigma_{(371 \leq AbtNr \leq 430)} ABT
-\end{displaymath}
+
+\begin{align*}
+  ABT_1 &= \sigma_{(100 \leq AbtNr \leq 220) \vee (AbtNr = 250)} ABT \\
+  ABT_2 &= \sigma_{(221 \leq AbtNr \leq 370) \wedge (AbtNr \neq 250)} ABT \\
+  ABT_3 &= \sigma_{(371 \leq AbtNr \leq 430)} ABT \\
+\end{align*}
 
 \section*{Aufgabe 2}
-\begin{displaymath}
-ANGEST_1 = ANGEST \textifsym{|><} _{PersNr=MgrPersNr} ABT
-\end{displaymath}
-\begin{displaymath}
-ANGEST_2 = ANGEST \textifsym{|><} (\Pi_{PersNr}ANGEST - \Pi_{PersNr=MgrPersNr} ABT)
-\end{displaymath}
 
+\begin{align*}
+  ANGEST_1 &= ANGEST \ltimes_{PersNr=MgrPersNr} ABT \\
+  ANGEST_2 &= ANGEST \ltimes (\Pi_{PersNr}ANGEST -
+  \Pi_{PersNr=MgrPersNr}
+  ABT) \\
+\end{align*}
 
 \end{document}
