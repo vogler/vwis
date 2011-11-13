@@ -55,10 +55,20 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2.1</version>
 				<configuration>
-					<descriptorRefs>
-						<descriptorRef>project</descriptorRef>
-					</descriptorRefs>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>vwis.xml</descriptor>
+					</descriptors>
 				</configuration>
+				<executions>
+					<execution>
+						<id>assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -66,6 +76,7 @@
 				<version>1.1</version>
 				<configuration>
 					<docsRoot>${project.basedir}/latex</docsRoot>
+					<latexBuildDir>${project.build.directory}/latex</latexBuildDir>
 				</configuration>
 				<executions>
 					<execution>
