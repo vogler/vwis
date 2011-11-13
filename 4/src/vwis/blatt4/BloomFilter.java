@@ -1,11 +1,17 @@
 package vwis.blatt4;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * A bloom filter implementation
  */
-public class BloomFilter {
+public class BloomFilter implements Serializable {
+
+    /**
+     * Serialization id.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The number of hash functions to use
