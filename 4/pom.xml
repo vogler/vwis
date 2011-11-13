@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>vwis.group14</groupId>
-  <artifactId>4</artifactId>
-  <version>0.1</version>
-  <description>Solution for sheet 4</description>
-  <developers>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>vwis.group14</groupId>
+	<artifactId>4</artifactId>
+	<version>0.1</version>
+	<description>Solution for sheet 4</description>
+	<developers>
 		<developer>
 			<id>max.hoffman</id>
 			<name>Max Hoffmann</name>
@@ -24,11 +25,11 @@
 	<organization>
 		<name>Gruppe 14</name>
 	</organization>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<build>
 		<finalName>VWIS ${project.organization.name} Blatt ${project.artifactId} (Volger, Hoffmann, Wiesner)</finalName>
 		<directory>${project.basedir}/bin</directory>
@@ -59,7 +60,60 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>latex-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<docsRoot>${project.basedir}/latex</docsRoot>
+				</configuration>
+				<executions>
+					<execution>
+						<id>compile-latex</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>latex</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											latex-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.1,)
+										</versionRange>
+										<goals>
+											<goal>latex</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<dependencies>
 		<dependency>
