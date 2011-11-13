@@ -1,0 +1,41 @@
+\documentclass[11pt,a4paper]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{ifsym}
+
+\begin{document}
+
+\author{Gruppe 14\\Max-Emanuel Hoffmann\\Ralf Vogler\\Sebastian Wiesner}
+\title{Verteilte und Web-Informationssysteme}
+\subtitle{Blatt 4}
+
+\maketitle
+
+\section*{Aufgabe 1}
+\begin{displaymath}
+ABT_1 = \sigma_{(100 \leq AbtNr \leq 220) \vee (AbtNr = 250)} ABT
+\end{displaymath}
+\begin{displaymath}
+ABT_2 = \sigma_{(221 \leq AbtNr \leq 370) \wedge (AbtNr \neq 250)} ABT
+\end{displaymath}
+\begin{displaymath}
+ABT:3 = \sigma_{(371 \leq AbtNr \leq 430)} ABT
+\end{displaymath}
+
+\section*{Aufgabe 2}
+\begin{displaymath}
+ANGEST_1 = ANGEST \textifsym{|><} _{PersNr=MgrPersNr} ABT
+\end{displaymath}
+\begin{displaymath}
+ANGEST_2 = ANGEST \textifsym{|><} (\Pi_{PersNr}ANGEST - \Pi_{PersNr=MgrPersNr} ABT)
+\end{displaymath}
+
+
+\end{document}
