@@ -114,7 +114,8 @@ public class BloomFilterJoin extends ClientProxy {
      */
     @Override
     public String[] open() throws Exception {
-        this.localNames = new ArrayList<>(Arrays.asList(localRelation.open()));
+        this.localNames = new ArrayList<>(Arrays.asList(this.localRelation
+                .open()));
         Operation.Open.sendTo(this.socket);
         Operation.Names.sendTo(this.socket);
         this.remoteNames = new ArrayList<>(Arrays.asList(((String[]) this.in
@@ -254,8 +255,10 @@ public class BloomFilterJoin extends ClientProxy {
     /**
      * Closes the local and remote relations and the network connection.
      *
-     * @throws IOException if network access failed
-     * @throws Exception if closing the local relation failed
+     * @throws IOException
+     *             if network access failed
+     * @throws Exception
+     *             if closing the local relation failed
      */
     @Override
     public void close() throws Exception {
