@@ -1,11 +1,10 @@
 package vwis.blatt4;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.BitSet;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,25 +45,13 @@ public class TestBloomFilter {
         assertEquals(HASH_FUNCTIONS, this.filter.getNumberOfHashFunctions());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testAddObjectNull() {
+    public void testAddObjectNull() throws IOException {
         this.filter.addObject(null);
+        assertTrue(this.filter.matches(null));
     }
 
     @Test
-    public void testAddObject() {
-        this.filter.addObject(10);
-        final BitSet expected = new BitSet(this.filter.getNumberOfBits());
-        expected.set(10);
-        expected.set(20);
-        expected.set(6);
-        expected.set(16);
-        expected.set(2);
-        assertArrayEquals(expected.toByteArray(), this.filter.getBitVector());
-    }
-
-    @Test
-    public void testMatches() {
+    public void testMatches() throws IOException {
         assertFalse(this.filter.matches(10));
         this.filter.addObject(10);
         assertTrue(this.filter.matches(10));

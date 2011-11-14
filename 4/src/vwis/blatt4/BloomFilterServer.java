@@ -117,13 +117,16 @@ public class BloomFilterServer extends ServerProxy {
      * Checks the given tuple against the received bloom filters.
      *
      * Each attribute in the given tuple for which a bloom filter was installed
-     * is checked against the bloom filter.  If all attribute values match their
+     * is checked against the bloom filter. If all attribute values match their
      * corresponding filters, true is returned.
      *
-     * @param tuple the tuple to match
+     * @param tuple
+     *            the tuple to match
      * @return true, if all bloom filters match the tuple, false otherwise
+     * @throws IOException
+     *             if hashing failed
      */
-    private boolean allFiltersMatch(Object[] tuple) {
+    private boolean allFiltersMatch(Object[] tuple) throws IOException {
         for (int i = 0; i < this.names.size(); ++i) {
             final String name = this.names.get(i);
             final BloomFilter filter = this.filters.get(name);

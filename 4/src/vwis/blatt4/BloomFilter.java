@@ -1,5 +1,8 @@
 package vwis.blatt4;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -86,25 +89,34 @@ public class BloomFilter implements Serializable {
     /**
      * Hashes the given object with the nth hash function.
      *
+     * The hash is a murmur hash of the serialized object representation.
+     *
      * @param obj
      *            the object to hash
      * @param hashFunction
      *            the index of the hash function to use
      * @return the hash value
+     * @throws IOException
+     *             if serialization failed
      */
-    private int getObjectHash(Object obj, int hashFunction) {
-        return (hashFunction + 1) * obj.hashCode();
+    private int getObjectHash(Object obj, int hashFunction) throws IOException {
+        final ByteArrayOutputStream sink = new ByteArrayOutputStream();
+        new ObjectOutputStream(sink).writeObject(obj);
+        return MurmurHash2.hash(sink.toByteArray(), hashFunction + 1);
     }
 
     /**
      * Gets all hashes for the given object.
      *
-     * @param obj the object to hash
+     * @param obj
+     *            the object to hash
      * @return an array with the hashes of the given object
+     * @throws IOException
+     *             if hashing failed
      */
-    private int[] getObjectHashes(Object obj) {
+    private int[] getObjectHashes(Object obj) throws IOException {
         final int[] hashes = new int[this.numberOfHashFunctions];
-        for (int i=0; i < this.numberOfHashFunctions; ++i) {
+        for (int i = 0; i < this.numberOfHashFunctions; ++i) {
             hashes[i] = this.getObjectHash(obj, i);
         }
         return hashes;
@@ -113,14 +125,17 @@ public class BloomFilter implements Serializable {
     /**
      * Gets all bits to set for the given object.
      *
-     * @param obj the object to hash
+     * @param obj
+     *            the object to hash
      * @return an array with the bit positions for the given objects
+     * @throws IOException
+     *             if hashing failed
      */
-    private int[] getObjectBits(Object obj) {
+    private int[] getObjectBits(Object obj) throws IOException {
         final int[] hashes = this.getObjectHashes(obj);
         final int[] bits = new int[hashes.length];
-        for (int i=0; i < hashes.length; ++i) {
-            bits[i] = hashes[i] % this.getNumberOfBits();
+        for (int i = 0; i < hashes.length; ++i) {
+            bits[i] = Math.abs(hashes[i] % this.getNumberOfBits());
         }
         return bits;
     }
@@ -141,7 +156,8 @@ public class BloomFilter implements Serializable {
     /**
      * Tests the bit at the given position.
      *
-     * @param bitPos the position of the bit
+     * @param bitPos
+     *            the position of the bit
      * @return true, if the bit is set, false otherwise
      */
     private boolean testBit(int bitPos) {
@@ -155,8 +171,10 @@ public class BloomFilter implements Serializable {
      *
      * @param obj
      *            the object to add
+     * @throws IOException
+     *             if hashing failed
      */
-    public void addObject(Object obj) {
+    public void addObject(Object obj) throws IOException {
         for (final int bit : this.getObjectBits(obj)) {
             this.setBit(bit);
         }
@@ -165,10 +183,13 @@ public class BloomFilter implements Serializable {
     /**
      * Tests whether the given object matches this filter.
      *
-     * @param obj the object to match
+     * @param obj
+     *            the object to match
      * @return true, if the given object matches this filter, false otherwise
+     * @throws IOException
+     *             if hashing failed
      */
-    public boolean matches(Object obj) {
+    public boolean matches(Object obj) throws IOException {
         for (final int bit : this.getObjectBits(obj)) {
             if (!this.testBit(bit)) {
                 return false;
