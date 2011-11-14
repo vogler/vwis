@@ -33,4 +33,71 @@
   ABT)) \\
 \end{align*}
 
+\section*{Aufgabe 3}
+
+\begin{enumerate}
+\item Die Partitionierung ist weder vollständig noch disjunkt.  Seien $R$ und
+  $S$ wie folgt definiert:
+  \begin{align*}
+    R &=
+    \begin{array}{c|c}
+      \mathbf{A} & \mathbf{B} \\\hline
+      a_1 & b_1 \\
+      a_2 & b_1
+    \end{array} & S &=
+    \begin{array}{c|c}
+      \mathbf{B} & \mathbf{C} \\\hline
+      b_1 & c_1 \\
+      b_2 & c_2
+    \end{array}
+  \end{align*}
+  Sei $R$ disjunkt und vollständig partitioniert in $R_1$ und $R_2$ mit:
+  \begin{align*}
+    R_1 &=
+    \begin{array}{c|c}
+      \mathbf{A} & \mathbf{B} \\\hline
+      a_1 & b_1
+    \end{array}
+    & R_2 &=
+    \begin{array}{c|c}
+      \mathbf{A} & \mathbf{B} \\\hline
+      a_2 & b_1
+    \end{array}
+  \end{align*}
+  Bei der abgeleiteten Partitionierung von $S$ ergibt sich dann:
+  \begin{align*}
+    S_1 &= S \ltimes R_1 =
+    \begin{array}{c|c}
+      \mathbf{B} & \mathbf{C} \\\hline
+      b_1 & c_1
+    \end{array} & S_2 &= S \ltimes R_2 =
+    \begin{array}{c|c}
+      \mathbf{B} & \mathbf{C} \\\hline
+      b_1 & c_1
+    \end{array}
+  \end{align*}
+Da $S_1 = S_2$, ist die Partitionierung nicht von $S$ nicht disjunkt.  Da
+$(b_2, c_2) \in S$, aber $(b_2, c_2) \notin (S_1 \cup S_2)$, ist die
+Partitionierung auch nicht vollständig.
+\item
+  \begin{align*}
+    L \bowtie R &= \left(\bigcup_{i=1}^n R_n\right) \bowtie S =
+    \bigcup_{i=1}^n\left(R_n \bowtie S\right) = \\
+    &= \bigcup_{i=1}^n \left(R_n \bowtie \bigcup_{j=1} S_j \cup \left(S -
+        \left(S \ltimes R\right)\right)\right) = \bigcup_{i=1}^n\bigcup_{j=1}^n
+    \left(R_i \bowtie S_j\right)
+  \end{align*}
+  Da für $i \ne j$ gilt $R_i \bowtie S_j \subseteq R_i \bowtie S_i$, ergibt
+  sich:
+  \begin{align*}
+    R \bowtie S &= \bigcup_{i=1}^n \left(R_i \bowtie S_i\right)
+  \end{align*}
+\item Die Formel gilt auch, wenn die Partitionierung über ein
+  Nicht-Fremdschlüssel-Attribut durchgeführt wird.  Ein Fremdschlüssel zeichnet
+  sich gegenüber einem normalen Attribut dadurch aus, dass er in der
+  referenzierten Relation der Primärschlüssel ist und eindeutig und nicht null
+  ist.  Null-Werte beeinflussen den Verbund allerdings nicht, und Duplikate
+  bleiben bei der Partitionierung und beim Verbund erhalten.
+\end{enumerate}
+
 \end{document}
