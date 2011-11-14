@@ -79,11 +79,12 @@ public class BloomFilterServer extends ServerProxy {
                 break;
             case Next:
                 // send the next matching tuple to the client
-                final Object[] tuple = this.relation.next();
-                if (tuple == null || this.allFiltersMatch(tuple)) {
-                    this.out.writeObject(tuple);
-                    this.out.flush();
-                }
+                Object[] tuple;
+                do {
+                    tuple = this.relation.next();
+                } while (tuple != null && (!this.allFiltersMatch(tuple)));
+                this.out.writeObject(tuple);
+                this.out.flush();
                 break;
             case Close:
                 // close the relation and the network connection
