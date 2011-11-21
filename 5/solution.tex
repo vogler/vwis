@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumerate}
+
+\begin{document}
+
+\author{Gruppe 14\\Max-Emanuel Hoffmann\\Ralf Vogler\\Sebastian Wiesner}
+\title{Verteilte und Web-Informationssysteme}
+\subtitle{Blatt 5}
+
+\maketitle
+
+\section*{Aufgabe 1}
+
+\begin{align*}
+  ANGEST_1 &= \Pi_{PersNr,AngName,Anschrift}(ANGEST) \\
+  ANGEST_2 &= \Pi_{PersNr,AbtNr}(ANGEST) \\
+ANGEST_3 &= \Pi_{PersNr,AngName,Gehalt}(ANGEST)
+\end{align*}
+
+\section*{Aufgabe 2}
+
+\begin{enumerate}[a)]
+\item Die kanonische Übersetzung der Anfragen ist:
+  \begin{align*}
+    Anfrage_1 &= \Sigma_{A.a = B.b}(A \times C) \\
+    Anfrage_2 &= \Sigma_{A.a = C.c}\left(\left(\Sigma_{A.b=500}(A)\right)
+      \times C\right)
+  \end{align*}
+  Daraus ergeben sich folgende Operationen, die bei der Bestimmung der
+  Allokation berücksichtigt werden müssen:
+  \begin{enumerate}[I)]
+  \item lese $p$
+  \item lese $p$ mit Filter $A.b = 500$
+  \end{enumerate}
+\item Aus der Angabe und den Ergebnissen der vorherigen Teilaufgabe ergeben
+  sich folgende Matrizen:
+  \begin{align*}
+    R_{tp} &=
+    \begin{pmatrix}
+      10000 & 10000 & 10000 \\
+      9000 & 0 & 0
+    \end{pmatrix} \\
+    H_{it} &=
+    \begin{pmatrix}
+      210 & 10 \\
+      190 & 150 \\
+      430 & 30 \\
+    \end{pmatrix}
+  \end{align*}
+\item Gemäß des Modells aus der Vorlesung muss folgende Summe minimiert werden,
+  um die Allokationsmatrix $V_{pi}$ zu bestimmen:
+  \begin{align*}
+    \underbrace{\left(\sum_{p,j} G_p V_{pi} S_i\right)}_{\text{Speicherkosten }
+   \sum_S} +
+    \underbrace{\left(\sum_{i,t,p,j} H_{it} O_{tp} V_{pj} U_{ij} \right) +
+    \left(\sum_{i,t,p,j}H_{it} R_{tp} V_{pj}
+      U_{ji}\right)}_{\text{Übertragungskosten } \sum_U}
+  \end{align*}
+  Da $S_i$ gemäß Angabe ein Nullvektor ist, gilt $\sum_S = 0$.  Für den ersten
+  Summanden aus $\sum_U$ kann ebenfalls $0$ angenommen werden, da bei
+  Leseoperationen gemeinhin gilt: $R_{tp} \gg O_{tp}$.  Somit verbleibt zur Optimierung:
+  \begin{align}
+    \label{eq:min}
+    \sum_{i,t,p,j}H_{it} R_{tp} V_{pj} U_{ji}
+  \end{align}
+  Da die Allokation gemäß Angabe redundanzfrei sein muss und jede Partition
+  somit auf nur einem einzigen Knoten alloziert werden darf, gilt $\forall_{p
+    \in [1,P]}:\left(\sum_i V_{pi}\right) = 1$.  Zudem darf eine Partition auf
+  einem Konten nur alloziert werden, wenn dieser Knoten genügend Speicherplatz
+  bietet.  Es gilt also $\forall_{i \in [1,K]}\left(\sum_{p} G_p V_{pi}\right)
+  \le M_i$.  Mit $M_i = \left(0, \infty, \infty\right)$ ergibt sich $V_{pi} =
+  0$ für $i = 0$.  Unter Berücksichtigung dieser Randbedingungen lässt sich
+  Gleichung~\ref{eq:min} für alle möglichen $V_{pi}$ berechnen (siehe
+  \texttt{optimization.py}).  Es ergibt sich, dass die Summe für folgendes
+  $V_{pi}$ minimal ist:
+  \begin{align*}
+    V_{pi} =
+    \begin{pmatrix}
+      0 & 0 & 1 \\
+      0 & 0 & 1 \\
+      0 & 0 & 1 \\
+    \end{pmatrix}
+  \end{align*}
+  Die drei Partitionen werden also allesamt auf Station 3 alloziert.
+\item Das Modell berücksichtigt Join-Operationen nicht, daher spielt auch deren
+  Kardinalität keine Rolle.  Es ist egal, ob eine Relation vor dem Verbund
+  übertragen wird oder das Ergebnis des Verbunds. Im ersten Fall gilt für die
+  Anzahl der übertragenen Tupel $n = |A||B|$, da die Relation $A$ für jedes Tupel
+  in $B$ übertragen werden muss.  Im zweiten Fall gilt $n = |A \times B| = |A||B|$.
+\end{enumerate}
+
+\end{document}
