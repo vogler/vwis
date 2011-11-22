@@ -74,7 +74,7 @@ ANGEST_3 &= \Pi_{PersNr,AngName,Gehalt}(ANGEST)
   Da die Allokation gemäß Angabe redundanzfrei sein muss und jede Partition
   somit auf nur einem einzigen Knoten alloziert werden darf, gilt $\forall_{p
     \in [1,P]}:\left(\sum_i V_{pi}\right) = 1$.  Zudem darf eine Partition auf
-  einem Konten nur alloziert werden, wenn dieser Knoten genügend Speicherplatz
+  einem Knoten nur alloziert werden, wenn dieser Knoten genügend Speicherplatz
   bietet.  Es gilt also $\forall_{i \in [1,K]}\left(\sum_{p} G_p V_{pi}\right)
   \le M_i$.  Mit $M_i = \left(0, \infty, \infty\right)$ ergibt sich $V_{pi} =
   0$ für $i = 0$.  Unter Berücksichtigung dieser Randbedingungen lässt sich
@@ -96,5 +96,13 @@ ANGEST_3 &= \Pi_{PersNr,AngName,Gehalt}(ANGEST)
   Anzahl der übertragenen Tupel $n = |A||B|$, da die Relation $A$ für jedes Tupel
   in $B$ übertragen werden muss.  Im zweiten Fall gilt $n = |A \times B| = |A||B|$.
 \end{enumerate}
+
+
+\section*{Aufgabe 3}
+\begin{enumerate}[a)]
+\item siehe Code
+\item Threshold-Ranking ist ein Pipelinebreaker weil eine Relation eventuell komplett gelesen werden muss um den richtigen Partner zu finden. Gleiches gilt für das No-Random-Access-Ranking. Dabei werden die Relationen zwar sequentiell gelesen, allerdings kann es notwendig sein alle Tupel zwischenzuspeichern bevor die Ergebnisse weitergeleitet werden können.
+\end{enumerate}
+
 
 \end{document}
