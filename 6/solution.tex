@@ -17,12 +17,87 @@
 
 \maketitle
 
-\section*{Aufgabe 1}
+\section{Aufgabe 1}
+\subsection{Information Manifold}
+\subsubsection{Globale Prädikate}
+\begin{itemize}
+\item car(C): C ist Auto
+\item brand(C, B): B ist Marke von C
+\item model(C, B, M): M ist Modell von Auto C der Marke B
+\item price(C, P): P ist der Preis von C
+\item distance(C, D): D sind die gefahrenen Kilometer von C
+\item age(C, A): A ist das Jahr der Erstzulassung von C
+\item fuel(C, F): F ist die Kraftstoffart von C
+\item location(C, L): L ist der Verkaufsstandort von C
+\item radius(C, L, R): R ist der Umkreis um den Verkaufsstandort L von C
+\item warranty(C, W): W bestimmt ob C eine Garantie hat (true oder false)
+\item new(C, N): N bestimmt ob C ein Neuwagen ist (true oder false)
+\end{itemize}
 
-\section*{Aufgabe 2}
+\subsubsection{Sichten}
+\paragraph*{autoscout24.de}
+\begin{align*}
+autoscout(B,M,P,D,A,F,L,R,W) &:- car(C) \& brand(C,B) \& model(C,B,M)\\
+&\& price(C,P) \& distance(C,D) \& age(C,A)\\
+&\& fuel(C,F) \& location(C,L) \& radius(C,L,R)\\
+&\& warranty(C,W).
+\end{align*}
+
+\paragraph*{mobile.de}
+Wenn nach Neuwagen gesucht wird, werden die Erstzulassung und Kilometerstand in der Suchmaske ausgeblendet. Deshalb sind zwei Regeln notwenig (Veroderung). 
+\begin{align*}
+mobile(B,M,P,D,A,F,L,R,N) &:- car(C) \& brand(C,B) \& model(C,B,M)\\
+&\& price(C,P) \& distance(C,D) \& age(C,A)\\
+&\& fuel(C,F) \& location(C,L) \& radius(C,L,R)\\
+&\& new(C,N) \& N==false.
+\end{align*}
+
+\begin{align*}
+mobile(B,M,P,D,A,F,L,R,N) &:- car(C) \& brand(C,B) \& model(C,B,M)\\
+&\& price(C,P)\\
+&\& fuel(C,F) \& location(C,L) \& radius(C,L,R)\\
+&\& new(C,N) \& N==true.
+\end{align*}
+
+
+\subsection{Tsimmis}
+\subsubsection{MSL Regeln}
+\paragraph*{autoscout24.de}
+\begin{verbatim}
+<f(C) carSearch {
+    <car C> <brand B> <model M>
+    <price P> <distance D> <age A>
+    <fuel F> <location L> <radius R>
+    <warranty W>
+}> @med :-
+<carAutoscout {
+    <car C> <brand B> <model M> 
+    <price P> <distance D> <age A> 
+    <fuel F> <location L> <radius R>
+    <warranty W>
+}>@autoscout24.de
+\end{verbatim}
+
+\paragraph*{mobile.de}
+\begin{verbatim}
+<f(C) carSearch {
+    <car C> <brand B> <model M>
+    <price P> <distance D> <age A>
+    <fuel F> <location L> <radius R>
+    <new N>
+}> @med :-
+<carMobile {
+    <car C> <brand B> <model M> 
+    <price P> <distance D> <age A> 
+    <fuel F> <location L> <radius R>
+    <new N>
+}>@mobile.de
+\end{verbatim}
+
+\section{Aufgabe 2}
 
 Mithilfe des \emph{HORIZ\_PART} Algorithmus sowie durch logische
-Schlussfolgerung ergibt sich unter der Annahme gleichverteilte Zugriffe auf die
+Schlussfolgerung ergibt sich unter der Annahme gleichverteilter Zugriffe auf die
 verschiedenen Relationen folgende Partitionierung:
 
 \begin{align*}
