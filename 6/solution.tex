@@ -1,0 +1,39 @@
+\documentclass[11pt,a4paper]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumerate}
+
+\begin{document}
+
+\author{Gruppe 14\\Max-Emanuel Hoffmann\\Ralf Vogler\\Sebastian Wiesner}
+\title{Verteilte und Web-Informationssysteme}
+\subtitle{Blatt 06}
+
+\maketitle
+
+\section*{Aufgabe 1}
+
+\section*{Aufgabe 2}
+
+Mithilfe des \emph{HORIZ\_PART} Algorithmus sowie durch logische
+Schlussfolgerung ergibt sich unter der Annahme gleichverteilte Zugriffe auf die
+verschiedenen Relationen folgende Partitionierung:
+
+\begin{align*}
+  F_1 &= A_1 \wedge A_2 & | AbtNr \in \left[100 \ldots 150\right]\\
+  F_2 &= A_2 \wedge A_5 & | AbtNr \in \left[151 \ldots 250\right]\\
+  F_3 &= A_2 \wedge A_5 & | AbtNr \in \left[251 \ldots 299\right]\\
+  F_4 &= A_2 \wedge A_6 & | AbtNr \in \left[300 \ldots 400\right]\\
+  F_5 &= A_3 \wedge A_6 & | AbtNr \in \left[401 \ldots 499\right]
+\end{align*}
+
+Diese Partitionierung ist die möglichst granulare Partitionierung.  Es zeigt
+sich, dass alle Prädikate relevant sind.
+
+\end{document}
