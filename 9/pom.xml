@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>vwis.group14</groupId>
+    <artifactId>9</artifactId>
+    <version>1.0</version>
+    <description>Solution for sheet 09</description>
+    <developers>
+        <developer>
+            <id>max.hoffman</id>
+            <name>Max Hoffmann</name>
+            <email>emanuel.hoffmann@gmx.de</email>
+        </developer>
+        <developer>
+            <id>ralf.vogler</id>
+            <name>Ralf Vogler</name>
+            <email>ralf.vogler@gmail.com</email>
+        </developer>
+        <developer>
+            <id>sebastian.wiesner</id>
+            <name>Sebastian Wiesner</name>
+            <email>basti.wiesner@mytum.de</email>
+        </developer>
+    </developers>
+    <organization>
+        <name>Gruppe 14</name>
+    </organization>
+
+    <build>
+        <finalName>VWIS ${project.organization.name} Blatt ${project.name} (Vogler, Hoffmann, Wiesner)</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
+        </dependency>
+    </dependencies>
+</project>
