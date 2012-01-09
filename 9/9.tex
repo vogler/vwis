@@ -8,6 +8,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{enumerate}
+\usepackage{graphicx}
 
 \begin{document}
 
@@ -71,5 +72,57 @@ $Actions$ Aktionen durch, so dass sich für $PW_{eager}$ ergibt:
 \end{align*}
 
 \subsection{Beispiel zur vorgeschlagenen Lösung}
+
+Abbildung~\ref{fig:two_tier_example} zeigt ein Beispiel zur
+Two-Tier-Replikation.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{beispiel.pdf}
+  \caption{Beispiel zur Two-Tier-Replikation}
+  \label{fig:two_tier_example}
+\end{figure}
+
+Die Schritte des Beispiels im Einzelnen:
+
+\begin{enumerate}
+\item Ausgangssituation mit einem Basisknoten $A$ (\emph{base node}), und zwei
+  mobilen Knoten (\emph{mobile nodes}) $a$ und $b$ im vollständig replizierten
+  Zustand.  Die \emph{probeweisen Versionen} ((\emph{tentative version})) der
+  mobilen Knoten sind in kursiver Schrift dargestellt, die \emph{Hauptversion}
+  (\emph{master version}) in normaler Schrift.  Der Basisknoten $A$ ist der
+  Hauptknoten (\emph{master node}) für das Objekt $x$.
+\item Die beiden mobilen Knoten aktualisieren ihre lokalen Versionen mit
+  unterschiedlichen \emph{probeweisen Transaktionen} (\emph{tentative
+    transactions}).  Die veränderten, nicht replizierten Daten sind in roter
+  Schrift dargestellt, die dazugehörige Transaktion ist unter dem
+  entsprechenden mobilen Knoten gezeigt.
+\item Der mobile Knoten $a$ verbindet sich mit dem Basisknoten, verwirft seine
+  probeweisen Versionen der Daten und sendet die noch nicht replizierten
+  Transaktionen.
+\item Der Basisknoten führt die empfangene Transaktion als
+  \emph{Basistransaktion} (\emph{base transaction}) durch, und sendet die
+  aktualisierte Hauptversion (\emph{master version}) der Daten an den mobilen
+  Knoten, der seine lokalen Daten entsprechend aktualisiert und die Verbindung
+  anschließend trennt.
+\item Der mobile Knoten $b$ verbindet sich mit dem Masterknoten und beginnt nun
+  seinerseits die Replizierung entsprechend Schritt~3.
+\end{enumerate}
+
+Im Folgenden zeigt das Beispiel den Fortgang mit zwei verschiedenen
+Akzeptanzkriterien für durchgeführte Transaktionen.  In Teil~a gilt das starke
+Akzeptanzkriterium, dass die Basistransaktion \emph{exakt dasselbe} Ergebnis
+zur Folge haben muss wie die im mobilen Knoten zuvor durchgeführte probeweise
+Transaktion.  Mithin schlägt die Basistransaktion in Schritt~6a fehlt
+(angezeigt durch die zwei Ausrufezeichen in roter Schritt), der mobile Knoten
+$b$ erhält die aktuelle Hauptversion des Datums und zeigt dem Nutzer im
+folgenden den Fehlschlag der Transaktion an.  Die fehlgeschlagene Transaktion
+ist in roter Farbe markiert.
+
+In Teil~b gilt dagegen das schwächere Akzeptanzkriterium, dass der Wert von $x$
+nicht negativ werden kann.  Mithin wird die Transaktion in Schritt~6b
+erfolgreich durchgeführt, und die Replizierung verläuft analog zu Schritt~4.
+7b zeigt anschließend noch, wie sich der Knoten $a$ im Anschluss erneut
+verbindet und die nun aktuelle Hauptversion des Datums erhält.
 
 \end{document}
