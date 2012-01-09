@@ -28,31 +28,48 @@ Die Herleitung des Faktors $N^3$ stützt sich auf die folgenden Annahmen:
 \item Jede Transaktion aktualisiert gleichverteilt eine feste Anzahl an Objekten.
 \end{enumerate}
 
-Gilt die erste Annahme nicht, so verringert sich der Faktor für die Verklemmungsrate.  Gilt die zweite Annahme nicht, so lässt sich über den Faktor nichts mehr aussagen, da die Anzahl der Sperren pro Transaktion nicht länger bekannt ist.
+Gilt die erste Annahme nicht, so verringert sich der Faktor für die
+Verklemmungsrate.  Gilt die zweite Annahme nicht, so lässt sich über den Faktor
+nichts mehr aussagen, da die Anzahl der Sperren pro Transaktion nicht länger
+bekannt ist.
 
 \subsection{Herleitung des Faktors $N^3$}
 
 \begin{align*}
-TotalEagerDeadlockRate &= TotalTransactions \times \frac{PD_{eager}}{TransactionDuration} = \\
-&= TotalTransactions \times \frac{PW_{eager}^2}{TotalTransactions \times TransactionDuration} = \\
-&= \frac{PW_{eager}^2}{TransactionDuration} = \frac{TotalTransactions^2 \times Actions^4}{4 \times DB_{size}^2 \times TransactionDuration} = \\
-&= \frac{TPS^2 \times Actions^6 \times ActionTime^2 \times Nodes^4}{4 \times DB_{size}^2 \times Actions \times Nodes \times ActionTime} \\
-&= \frac{TPS^2 \times Actions^5 \times ActionTime \times \mathbf{Nodes^3}}{4 \times DB_{size}^2}
+  TotalEagerDeadlockRate &= TotalTransactions \times
+  \frac{PD_{eager}}{TransactionDuration} = \\
+  &= TotalTransactions \times \frac{PW_{eager}^2}{TotalTransactions
+    \times TransactionDuration} = \\
+  &= \frac{PW_{eager}^2}{TransactionDuration} = \frac{TotalTransactions^2
+    \times Actions^4}{4 \times DB_{size}^2 \times TransactionDuration} = \\
+  &= \frac{TPS^2 \times Actions^6 \times ActionTime^2 \times Nodes^4}{4
+    \times DB_{size}^2 \times Actions \times Nodes \times ActionTime} \\
+  &= \frac{TPS^2 \times Actions^5 \times ActionTime \times \mathbf{Nodes^3}}{4
+    \times DB_{size}^2}
 \end{align*}
 
-Es gilt $TransactionDuration = Actions \times Nodes \times ActionTime$, da die Aktionen einer Transaktion auf jedem Knoten ausgeführt werden müssen, bevor die Transaktion abgeschlossen ist.  Jede Aktion benötigt dabei $ActionTime$ zur Ausführung.
+Es gilt $TransactionDuration = Actions \times Nodes \times ActionTime$, da die
+Aktionen einer Transaktion auf jedem Knoten ausgeführt werden müssen, bevor die
+Transaktion abgeschlossen ist.  Jede Aktion benötigt dabei $ActionTime$ zur
+Ausführung.
 
-Für $TotalTransactions$ gilt $TotalTransactions = TPS \times Actions \times ActionTime \times Nodes^2$.
+Für $TotalTransactions$ gilt $TotalTransactions = TPS \times Actions \times
+ActionTime \times Nodes^2$.
 
-Unter der Annahme, dass jede Transaktion im Mittel zur Hälfte beendet ist, sperrt eine Transaktion $\frac{TotalTransactions \times Actions}{2}$ Ressourcen.  Da ferner alle Objekte der Datenbank gleichverteilt abgefragt werden, ergibt sich $\frac{TotalTransactions\times Actions}{2 \times DB_{size}}$ als Wahrscheinlichkeit dafür, dass eine Transaktion einer von einer anderen Transaktion gesperrte Ressource abfragt.  Jede Transaktion für $Actions$ Aktionen durch, so dass sich für $PW_{eager}$ ergibt:
+Unter der Annahme, dass jede Transaktion im Mittel zur Hälfte beendet ist,
+sperrt eine Transaktion $\frac{TotalTransactions \times Actions}{2}$
+Ressourcen.  Da ferner alle Objekte der Datenbank gleichverteilt abgefragt
+werden, ergibt sich $\frac{TotalTransactions\times Actions}{2 \times
+  DB_{size}}$ als Wahrscheinlichkeit dafür, dass eine Transaktion einer von
+einer anderen Transaktion gesperrte Ressource abfragt.  Jede Transaktion für
+$Actions$ Aktionen durch, so dass sich für $PW_{eager}$ ergibt:
 
 \begin{align*}
-PW_{eager} &= 1-\left(1 - \frac{TotalTransactions\times Actions}{2 \times DB_{size}}\right)^{Actions} = \\
-&= \frac{TotalTransactions \times Actions^2}{2 \times DB_{size}}
+  PW_{eager} &= 1-\left(1 - \frac{TotalTransactions\times Actions}{2
+      \times DB_{size}}\right)^{Actions} = \\
+  &= \frac{TotalTransactions \times Actions^2}{2 \times DB_{size}}
 \end{align*}
 
-
- 
 \subsection{Beispiel zur vorgeschlagenen Lösung}
 
 \end{document}
