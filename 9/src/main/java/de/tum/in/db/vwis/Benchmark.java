@@ -17,8 +17,6 @@ public class Benchmark {
 
         System.out.printf("|R| = %s; |S| = %s\n", R.size(), S.size());
 
-        StopWatch watch = new StopWatch();
-
         final long singleThreadedTime = measureJoin(new HashJoin(1));
         printResults("singlethreaded", singleThreadedTime);
         final HashJoin multiThreadedJoin = new HashJoin();
@@ -28,6 +26,12 @@ public class Benchmark {
         final double ratio = (double) multiThreadedTime /
                 (double) singleThreadedTime;
         System.out.printf("multithreaded / singlethreaded = %f\n", ratio);
+        final long t2 = measureJoin(new HashJoin(4));
+        printResults(String.format("%d threads", 4), t2); // best result on Core2 Duo
+        final long t3 = measureJoin(new HashJoin(8));
+        printResults(String.format("%d threads", 8), t3);
+        final long t4 = measureJoin(new HashJoin(16));
+        printResults(String.format("%d threads", 16), t4);
     }
 
     private static void printResults(String label, long time) {
