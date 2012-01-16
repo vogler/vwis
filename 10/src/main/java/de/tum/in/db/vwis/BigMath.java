@@ -93,32 +93,59 @@ public class BigMath {
     }
 
     /**
-     * Computes a probable prime.
-     * <p/>
-     * The probability of the primality of the returned number is 1-(0.5)^m.
-     *
-     * @param n the number of binary places of the computed prime
-     * @param m the number of witnesses for the primality of the result
-     * @return a probable prime
+     * Indicates that a number is not a prime number.
      */
-    public static BigInteger computePrime(final int n, final int m) {
-        // compute random integer
+    private static class NotAPrimeException extends Exception {
+        public NotAPrimeException() {
+            super("Not a prime");
+        }
+    }
+
+    /**
+     * Tries to compute a single prime with probability of 1-(0.5)^m.
+     *
+     * @param n the number digits of the computed prime
+     * @param m a measure for the probability of the primality of the result
+     * @return a probable prime number
+     * @throws NotAPrimeException if no prime could be computed
+     */
+    private static BigInteger tryComputePrime(
+            final int n, final int m) throws NotAPrimeException {
         final BigInteger p = randomOddInteger(n);
         final List<BigInteger> witnesses = computeWitnesses(p, m);
 
         for (final BigInteger w : witnesses) {
-            if (!p.gcd(w).equals(BigInteger.ONE)) {
-                // restart if any witness divides p
-                return computePrime(n, m);
+            if (p.gcd(w).compareTo(BigInteger.ONE) != 0) {
+                throw new NotAPrimeException();
             }
 
             final BigInteger i = w.modPow(
                     p.subtract(BigInteger.ONE).divide(TWO), p);
-            if (jacobi(w, p).equals(i)) {
-                return computePrime(n, m);
+            final BigInteger j = jacobi(w, p);
+            if (j.mod(p).compareTo(i.mod(p)) != 0) {
+                throw new NotAPrimeException();
             }
         }
+
         return p;
+    }
+
+    /**
+     * Computes a number which is prime with a probability of 1-(0.5)^m.
+     *
+     * @param n the number of binary digits of the computed prime
+     * @param m the number of witnesses for the primality of the result
+     * @return a probable prime
+     */
+    public static BigInteger computePrime(final int n, final int m) {
+        //return new BigInteger(n, m, new SecureRandom());
+        while (true) {
+            try {
+                return tryComputePrime(n, m);
+            } catch (NotAPrimeException e) {
+                continue;
+            }
+        }
     }
 
     /**
