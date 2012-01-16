@@ -19,12 +19,22 @@ public class RSA {
     private static final int NUMBER_OF_WITNESSES = 50;
 
     /**
+     * The minimum key size for key pairs.
+     */
+    private static final int MINIMUM_KEYSIZE = 64;
+
+    /**
      * Computes a RSA key pair.
      *
-     * @param n the key size
+     * @param n the key size in bits, must be 64 at least
      * @return a RSA key pair
+     * @throws IllegalArgumentException if n < 64
      */
     public static KeyPair computeKeyPair(final int n) {
+        if (n < MINIMUM_KEYSIZE) {
+            throw new IllegalArgumentException(
+                    "Key too small. Key must have at least 64 bits.");
+        }
         final BigInteger p = computePrime(n/2, NUMBER_OF_WITNESSES);
         final BigInteger q = computePrime(n/2, NUMBER_OF_WITNESSES);
 
