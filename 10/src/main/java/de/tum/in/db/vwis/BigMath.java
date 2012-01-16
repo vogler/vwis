@@ -60,7 +60,7 @@ public class BigMath {
             final BigInteger exp = b.pow(2).subtract(
                     BigInteger.ONE).divide(EIGHT);
             final BigInteger j = jacobi(a.divide(BigMath.TWO), b);
-            return isOdd(j) ? j.negate() : j;
+            return isOdd(exp) ? j.negate() : j;
         } else {
             final BigInteger exp = a.subtract(BigInteger.ONE).multiply(
                     b.subtract(BigInteger.ONE)).divide(FOUR);
