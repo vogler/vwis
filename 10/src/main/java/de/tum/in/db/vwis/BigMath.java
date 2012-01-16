@@ -2,6 +2,7 @@ package de.tum.in.db.vwis;
 
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,7 +44,7 @@ public class BigMath {
      * @return a random odd integer
      */
     public static BigInteger randomOddInteger(final int n) {
-        return new BigInteger(n, new Random()).or(BigInteger.ONE);
+        return new BigInteger(n, new SecureRandom()).or(BigInteger.ONE);
     }
 
     /**
@@ -80,7 +81,7 @@ public class BigMath {
     static List<BigInteger> computeWitnesses(final BigInteger p, final int m) {
         // assure that the witnesses are smaller by choosing a smaller bitsize
         final int n = p.bitLength() - 1;
-        final Random rng = new Random();
+        final Random rng = new SecureRandom();
         List<BigInteger> witnesses = new ArrayList<>(m);
         for (int i = 0; i < m; ++i) {
             witnesses.add(new BigInteger(n, rng));
