@@ -71,7 +71,7 @@ public class BigMath {
     }
 
     /**
-     * Computes m witnesses for the primaliy of p.
+     * Computes m witnesses for the primality of p.
      *
      * @param p a big integer
      * @param m the number of witnesses
