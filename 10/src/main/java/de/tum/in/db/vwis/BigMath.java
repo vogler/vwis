@@ -60,7 +60,7 @@ public class BigMath {
         } else if (isEven(a)) {
             final BigInteger exp = b.pow(2).subtract(
                     BigInteger.ONE).divide(EIGHT);
-            final BigInteger j = jacobi(a.divide(BigMath.TWO), b);
+            final BigInteger j = jacobi(a.divide(TWO), b);
             return isOdd(exp) ? j.negate() : j;
         } else {
             final BigInteger exp = a.subtract(BigInteger.ONE).multiply(
@@ -68,7 +68,6 @@ public class BigMath {
             final BigInteger j = jacobi(b.mod(a), a);
             return isOdd(exp) ? j.negate() : j;
         }
-
     }
 
     /**
@@ -123,9 +122,8 @@ public class BigMath {
     }
 
     /**
-     * Computes a probable prime larger than the given big integer.
-     * <p/>
-     * The probability of the primality of the returned number is 1-(0.5)^m.
+     * Computes a number larger than the given big integer that is prime with
+     * a probability of 1-(0.5)^m.
      *
      * @param i a big integer
      * @param m the number of witnesses for the primality of the result
@@ -158,9 +156,7 @@ public class BigMath {
             final BigInteger r = rxy[0];
             final BigInteger x = rxy[1];
             final BigInteger y = rxy[2];
-            return new BigInteger[]{
-                    r, y, x.subtract(a.divide(b).multiply(y))
-            };
+            return new BigInteger[]{r, y, x.subtract(a.divide(b).multiply(y))};
         }
     }
 }
