@@ -16,7 +16,7 @@ public class RSA {
     /**
      * The number of witnesses used in internal calculations.
      */
-    private static int NUMBER_OF_WITNESSES = 50;
+    private static final int NUMBER_OF_WITNESSES = 50;
 
     /**
      * Computes a RSA key pair.
