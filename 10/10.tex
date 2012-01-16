@@ -39,7 +39,7 @@
   diesen Schlüsseln verschlüsselten Nachrichten nicht lesen kann.  Ist der
   Angreifer allerdings in der Lage, die Übertragung der öffentlichen Schlüssel
   abzufangen und zu \emph{manipulieren}, so kann er während des
-  Schlüsselaustauschen die übertragenen, öffentlichen Schlüssel durch ihm
+  Schlüsselaustausches die übertragenen öffentlichen Schlüssel durch ihm
   bekannte ersetzen, und somit die Kommunikation vollständig entschlüsseln.  Um
   derartige Angriffe zu verhindern, müssen die übertragenen Schlüssel nach der
   Übertragung durch die empfangende Gegenstelle auf Echtheit überprüft werden.
@@ -54,7 +54,7 @@
   individuellen Objekten durch eine Signatur \enquote{Vertrauen} aussprechen.
   Kommunizieren zwei Objekte innerhalb einer PKI miteinander, so können sie
   über die PKI die Zertifizierungsstellen des jeweils anderen öffentlichen
-  Schlüssel abfragen, und somit den öffentlichen Schlüssel auf
+  Schlüssels abfragen, und somit den öffentlichen Schlüssel auf
   \enquote{Echtheit} prüfen.  Dazu ist es allerdings nötig, dass die
   Gegenstellen mindestens einer der Zertifizierungsstellen in der
   Zertifizierungshierarchie des öffentlichen Schlüssels der Gegenseite vorab
@@ -74,7 +74,7 @@
         den Benutzer)
       \item[Organisiationseinheit] Frei wählbares Feld, in diesem Fall leer
         leer\footnote{Dient eigentlich dazu, Teilorganisiationen einer
-          übergeordneten Organisation zuzuordnen (in Firem beispielsweise
+          übergeordneten Organisation zuzuordnen (in Firmen beispielsweise
           Abteilungen zu Geschäftsbereichen)}
       \item[Seriennummer] Eine von der CA vergebene, eindeutige Nummer zur
         Identifizierung dieses Zertifikats
@@ -93,7 +93,7 @@
   \item[Gültigkeitsdauer] Ausstellungs- und Ablaufdatum des Zertifikats.  Die
     begrenzte Gültigkeitsdauer beschränkt die Gültigkeit von Zertifikaten, so
     dass unsichere Zertifikate (beispielsweise nach Bekanntwerden einer
-    Schwachstelle im Zertifizierungsalgorithmus) ewig in Umlauf verbleiben.
+    Schwachstelle im Zertifizierungsalgorithmus) nicht ewig in Umlauf bleiben.
   \item[Fingerabdrücke] Mit dem privaten Schlüssel der CA verschlüsselte Hashes
     des Zertifikats zur Authentifizierung desselben.  Diese Felder ermöglichen
     es, Zertifikate auch ohne zentrale Zertifizierungsstelle durch Austausch
