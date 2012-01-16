@@ -24,9 +24,9 @@ public class Main {
         System.out.printf("Public key: %s\n", keys.getPublicKey());
         System.out.printf("Private key: %s\n", keys.getPrivateKey());
 
-        final List<BigInteger> C = RSA.encrypt(M, keys.getPrivateKey());
+        final List<BigInteger> C = RSA.encrypt(M, keys.getPublicKey());
         System.out.printf("Encrypted message: %s\n", C);
-        final String M1 = RSA.decrypt(C, keys.getPublicKey());
+        final String M1 = RSA.decrypt(C, keys.getPrivateKey());
         System.out.printf("Decrypted message: %s\n", M1);
         System.out.printf("Equals original message? %s\n", M.equals(M1));
     }
