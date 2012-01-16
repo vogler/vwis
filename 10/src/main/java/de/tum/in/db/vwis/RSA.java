@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.tum.in.db.vwis.BigMath.computeLargerPrime;
-import static de.tum.in.db.vwis.BigMath.computePrime;
-import static de.tum.in.db.vwis.BigMath.extendedEuclidian;
+import static de.tum.in.db.vwis.BigMath.*;
 
 /**
  * RSA encryption and decryption.
@@ -27,6 +25,16 @@ public class RSA {
     private static final int MINIMUM_KEYSIZE = 64;
 
     /**
+     * Chunk size for encode() and decode().
+     */
+    private static final int CHUNK_SIZE = 4;
+
+    /**
+     * The character set used by encode() and decode().
+     */
+    private static final Charset ENCODING = Charset.forName("UTF-8");
+
+    /**
      * Computes a RSA key pair.
      *
      * @param n the key size in bits, must be 64 at least
@@ -38,8 +46,8 @@ public class RSA {
             throw new IllegalArgumentException(
                     "Key too small. Key must have at least 64 bits.");
         }
-        final BigInteger p = computePrime(n/2, NUMBER_OF_WITNESSES);
-        final BigInteger q = computePrime(n/2, NUMBER_OF_WITNESSES);
+        final BigInteger p = computePrime(n / 2, NUMBER_OF_WITNESSES);
+        final BigInteger q = computePrime(n / 2, NUMBER_OF_WITNESSES);
 
         final BigInteger m = p.multiply(q);
         final BigInteger d = computeLargerPrime(p.max(q), NUMBER_OF_WITNESSES);
@@ -55,7 +63,7 @@ public class RSA {
     /**
      * Transforms a message with RSA.
      *
-     * @param m the message
+     * @param m   the message
      * @param key the RSA key
      * @return the transformed message
      */
@@ -66,27 +74,41 @@ public class RSA {
     /**
      * Transforms a message with RSA.
      *
-     * @param m the message
+     * @param m   the message
      * @param key the key
      * @return the transformed message
      */
-    public static List<BigInteger> rsa(final List<BigInteger> m, 
-                                       final Key key)  {
+    public static List<BigInteger> rsa(final List<BigInteger> m,
+                                       final Key key) {
         List<BigInteger> result = new ArrayList<>(m.size());
         for (final BigInteger i : m) {
             result.add(rsa(i, key));
         }
         return result;
     }
-    
+
+    /**
+     * Encrypts the given message with the given key.
+     *
+     * @param m the message to encrypt
+     * @param k the key to use
+     * @return the encrypted message
+     */
     public static List<BigInteger> encrypt(final String m, final Key k) {
         return rsa(encode(m), k);
     }
-    
-    public static String decrypt(final List<BigInteger> m, final Key k) {
-        return decode(rsa(m, k));
+
+    /**
+     * Decrypts the given message with the given key.
+     *
+     * @param c the cypher text
+     * @param k the key
+     * @return the decrypted message
+     */
+    public static String decrypt(final List<BigInteger> c, final Key k) {
+        return decode(rsa(c, k));
     }
-    
+
     /**
      * Encodes the given string into a sequence of big numbers suitable for
      * RSA transformation.
@@ -106,9 +128,9 @@ public class RSA {
         buffer.put(padBytes);
 
         final List<BigInteger> result = new ArrayList<>(m.length());
-        for (int i = 0; i < buffer.array().length; i+=CHUNK_SIZE) {
+        for (int i = 0; i < buffer.array().length; i += CHUNK_SIZE) {
             final byte[] chunk = Arrays.copyOfRange(
-                    buffer.array(), i, i+CHUNK_SIZE);
+                    buffer.array(), i, i + CHUNK_SIZE);
             result.add(new BigInteger(chunk));
         }
         return result;
@@ -121,10 +143,11 @@ public class RSA {
      * @return the decoded message
      */
     public static String decode(final List<BigInteger> m) {
-        final ByteBuffer buffer = ByteBuffer.allocate(m.size() * CHUNK_SIZE - 1);
-        for (int i=1; i < m.size(); ++i) {
+        final ByteBuffer buffer = ByteBuffer.allocate(
+                m.size() * CHUNK_SIZE - 1);
+        for (int i = 1; i < m.size(); ++i) {
             final byte[] bytes = m.get(i).toByteArray();
-            final byte[] padding = new byte[CHUNK_SIZE-bytes.length];
+            final byte[] padding = new byte[CHUNK_SIZE - bytes.length];
             buffer.put(padding);
             buffer.put(bytes);
         }
@@ -132,6 +155,4 @@ public class RSA {
         final byte[] bytes = Arrays.copyOfRange(buffer.array(), 0, length);
         return new String(bytes, ENCODING);
     }
-    
-
 }
