@@ -84,7 +84,11 @@ public class BigMath {
         final Random rng = new SecureRandom();
         List<BigInteger> witnesses = new ArrayList<>(m);
         for (int i = 0; i < m; ++i) {
-            witnesses.add(new BigInteger(n, rng));
+            BigInteger w;
+            do {
+                w = new BigInteger(n, rng);
+            } while (w.compareTo(p) >= 0);
+            witnesses.add(w);
         }
         return witnesses;
     }
