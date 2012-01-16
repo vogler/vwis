@@ -25,8 +25,8 @@ public class RSA {
      * @return a RSA key pair
      */
     public static KeyPair computeKeyPair(final int n) {
-        final BigInteger p = computePrime(n, NUMBER_OF_WITNESSES);
-        final BigInteger q = computePrime(n, NUMBER_OF_WITNESSES);
+        final BigInteger p = computePrime(n/2, NUMBER_OF_WITNESSES);
+        final BigInteger q = computePrime(n/2, NUMBER_OF_WITNESSES);
 
         final BigInteger m = p.multiply(q);
         final BigInteger d = computeLargerPrime(p.max(q), NUMBER_OF_WITNESSES);
