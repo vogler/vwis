@@ -1,7 +1,10 @@
 package de.tum.in.db.vwis;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static de.tum.in.db.vwis.BigMath.computeLargerPrime;
@@ -84,20 +87,50 @@ public class RSA {
         return decode(rsa(m, k));
     }
     
+    /**
+     * Encodes the given string into a sequence of big numbers suitable for
+     * RSA transformation.
+     *
+     * @param m the message
+     * @return the encoded message
+     */
     public static List<BigInteger> encode(final String m) {
+        final byte[] bytes = m.getBytes(ENCODING);
+        final int padding = bytes.length % CHUNK_SIZE != 0 ?
+                CHUNK_SIZE - (bytes.length % CHUNK_SIZE) : 0;
+        final ByteBuffer buffer = ByteBuffer.allocate(
+                4 + bytes.length + padding);
+        buffer.putInt(bytes.length);
+        buffer.put(bytes);
+        final byte[] padBytes = new byte[buffer.remaining()];
+        buffer.put(padBytes);
+
         final List<BigInteger> result = new ArrayList<>(m.length());
-        for (final Character c : m.toCharArray()) {
-            result.add(BigInteger.valueOf(c));
+        for (int i = 0; i < buffer.array().length; i+=CHUNK_SIZE) {
+            final byte[] chunk = Arrays.copyOfRange(
+                    buffer.array(), i, i+CHUNK_SIZE);
+            result.add(new BigInteger(chunk));
         }
         return result;
     }
-    
+
+    /**
+     * Decodes an encoded message. Inverse of #encode(String m)
+     *
+     * @param m the message
+     * @return the decoded message
+     */
     public static String decode(final List<BigInteger> m) {
-        final StringBuilder sb = new StringBuilder(m.size());
-        for (final BigInteger i: m) {
-            sb.append((char) i.intValue());
+        final ByteBuffer buffer = ByteBuffer.allocate(m.size() * CHUNK_SIZE - 1);
+        for (int i=1; i < m.size(); ++i) {
+            final byte[] bytes = m.get(i).toByteArray();
+            final byte[] padding = new byte[CHUNK_SIZE-bytes.length];
+            buffer.put(padding);
+            buffer.put(bytes);
         }
-        return sb.toString();
+        final int length = m.get(0).intValue();
+        final byte[] bytes = Arrays.copyOfRange(buffer.array(), 0, length);
+        return new String(bytes, ENCODING);
     }
     
 
