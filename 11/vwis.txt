@@ -1,0 +1,51 @@
+select ?p ?o where { ?x _:hasName "Gerhard Herzberg". ?x ?p ?o }
+
+
+1) Welche Wissenschaftler, die in Hamburg geboren wurden, haben einen Nobelpreis gewonnen?
+
+select ?x where { ?x <bornInLocation> "Hamburg" }
+select ?x where { ?x _:wasBornIn "Hamburg" }
+
+select ?x where { ?x <hasWonPrize> "Nobel_Prize" }
+select ?x where { ?x _:hasWonPrize "Nobel_Prize" }
+
+select ?x where { ?x <bornInLocation> "Hamburg". ?x <hasWonPrize> "Nobel_Prize". ?x <type> "wordnet_scientist_110560637" }
+<Gustav_Ludwig_Hertz>
+<James_Franck>
+
+
+2) Welche Firmen wurden in Silicon Valley im Jahr 2004 gegründet?
+
+select ?x where { ?x <wasCreatedOnDate> "2004-##-##" }
+select ?x where { ?x <bornOnDate> "2004" }
+
+select ?x where { ?x <createdDuring> "2004,2005" }
+
+https://d5gate.ag5.mpi-sb.mpg.de/webyagospotlx/WebInterface?passedQuery=I%3A1%09S%3A\u003fc%09P%3Atype%09O%3Acompany%09LP%3Anearby%09LV%3ASilicon%20Valley%3BI%3A0%09S%3A\u003fx%09P%3Acreated%09O%3A\u003fc%09TP%3Aduring%09TV%3A2004%3B
+
+	Id	Subject	Property	Object	Time	Location	Keywords
+1	#505500535	Hans Reiser	created	Namesys	2004-01-01 ↓↑, 2004-01-01 ↓↑	-	
+counter surveillance computer ...
+	#96190282	Namesys	type	company	2004-01-01 ↓↑, -	Oakland, California	
+Russia File Systems ...
+
+
+select ?p ?o where { <Namesys> ?p ?o }
+
+select ?x where { ?x <establishedOnDate> "2004". ?x <type> "wordnet_company_108058098". ?x <locatedIn> "California" }
+<TextDrive>
+
+
+3) Mit wem ist Steven Spielberg verheiratet?
+
+select ?x where { ?x <isMarriedTo> "Steven_Spielberg" }
+<Amy_Irving>
+<Kate_Capshaw>
+
+
+4) In welchen Filmen hat Adam Sandler mitgespielt?
+
+select ?o where { <Adam_Sandler> <actedIn> ?o }
+"Anger_Management"
+"Big_Daddy_(film)"
+

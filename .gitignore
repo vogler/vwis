@@ -1,5 +1,6 @@
 # latex build files
 *.pdf
+*.out
 *.aux
 *.log
 # distribution files

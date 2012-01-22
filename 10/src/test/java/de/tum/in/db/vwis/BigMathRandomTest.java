@@ -3,7 +3,6 @@ package de.tum.in.db.vwis;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class BigMathRandomTest {
 
     @Test()
     public void testComputePrime() {
-        /// FIXME: test case!
+        assertTrue(computePrime(50, 20).isProbablePrime(20));
     }
 
     @Test
