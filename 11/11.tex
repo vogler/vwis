@@ -100,7 +100,7 @@ select ?n where {
   ?p 15 ?n. ?s 10 ?p. ?s 9 2
 }
 \end{verbatim}
-\item Im Folgenden werden die Pattern über den SPO-Index oder Permutationen davon gesucht (Die Variablen müssen dabei ein Suffix sein). Gibt es mehrere Möglichkeiten für einen Index, wird derjenige gewählt, der wahrscheinlich die höhere Selektivität am Anfang erreicht.\\
+\item Im Folgenden werden die Pattern über den SPO-Index oder Permutationen davon gesucht (die Variablen müssen dabei ein Suffix sein). Gibt es mehrere Möglichkeiten für einen Index, wird derjenige gewählt, der wahrscheinlich die höhere Selektivität am Anfang erreicht.\\
 Mögliche Abfolge:\\
 \begin{enumerate}
 \item ?s 9 2 -> OPS
@@ -108,7 +108,7 @@ Mögliche Abfolge:\\
 \item Danach wird ein Merge-Join über die Subjekte der beiden Ergebnismengen durchgeführt, da beide sortiert vorliegen.
 \item ?p 15 ?n -> PSO
 \item Hash-Join (weil Kandidaten nicht sortiert) von Objekt ?p (?s 10 ?p) und Subjekt ?p (?p 15 ?n).
-\item Projektion auf den Namen ?n und umwandeln der IDs in Literale über eine direktes Mapping -> Ergebnis "Johnny Depp".
+\item Projektion auf den Namen ?n und umwandeln der IDs in Literale über ein direktes Mapping -> Ergebnis "Johnny Depp".
 \end{enumerate}
 \end{enumerate}
 
