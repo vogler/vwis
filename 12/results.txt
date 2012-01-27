@@ -1,0 +1,160 @@
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 15
+model name	: Intel(R) Core(TM)2 Duo CPU     T7300  @ 2.00GHz
+stepping	: 10
+cpu MHz		: 1916.880
+cache size	: 6144 KB
+fdiv_bug	: no
+hlt_bug		: no
+f00f_bug	: no
+coma_bug	: no
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 5
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 constant_tsc up pni monitor ssse3
+bogomips	: 3833.76
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+------------
+N_OLAP: 0
+------------
+N_OLAP: 0
+TFork: 1µs
+TTrans: 1553649µs
+TPS: 643646
+------------
+
+N_OLAP: 1
+TQuery: 449882µs
+TQuery: 377040µs
+TQuery: 397928µs
+TQuery: 467128µs
+TQuery: 383070µs
+TQuery: 394464µs
+------------
+N_OLAP: 1
+TFork: 3752µs
+TTrans: 2851207µs
+TPS: 350728
+------------
+
+N_OLAP: 2
+TQuery: 639023µs
+TQuery: 728747µs
+TQuery: 637155µs
+TQuery: 629318µs
+TQuery: 693250µs
+TQuery: 660889µs
+TQuery: 606594µs
+TQuery: 644160µs
+TQuery: 633051µs
+TQuery: 587928µs
+TQuery: 595161µs
+TQuery: 665669µs
+------------
+N_OLAP: 2
+TFork: 5299µs
+TTrans: 4433728µs
+TPS: 225543
+------------
+
+N_OLAP: 3
+TQuery: 943155µs
+TQuery: 961110µs
+TQuery: 961481µs
+TQuery: 765866µs
+TQuery: 770131µs
+TQuery: 821310µs
+TQuery: 823035µs
+TQuery: 852032µs
+TQuery: 811077µs
+TQuery: 804382µs
+TQuery: 807965µs
+TQuery: 785288µs
+TQuery: 796851µs
+TQuery: 749036µs
+TQuery: 773139µs
+TQuery: 766666µs
+TQuery: 732639µs
+TQuery: 829107µs
+------------
+N_OLAP: 3
+TFork: 9626µs
+TTrans: 5580371µs
+TPS: 179199
+------------
+
+N_OLAP: 10
+TQuery: 2429331µs
+TQuery: 2457336µs
+TQuery: 2483719µs
+TQuery: 2600820µs
+TQuery: 2643884µs
+TQuery: 2715248µs
+TQuery: 2762370µs
+TQuery: 2864241µs
+TQuery: 3000548µs
+TQuery: 3029834µs
+TQuery: 2194107µs
+TQuery: 2491944µs
+TQuery: 2160564µs
+TQuery: 2288956µs
+TQuery: 2491661µs
+TQuery: 2553624µs
+TQuery: 2403390µs
+TQuery: 2315960µs
+TQuery: 2168958µs
+TQuery: 2169804µs
+TQuery: 2195125µs
+TQuery: 2106967µs
+TQuery: 2259555µs
+TQuery: 2259450µs
+TQuery: 2306210µs
+TQuery: 2305758µs
+TQuery: 2359850µs
+TQuery: 2491591µs
+TQuery: 2388311µs
+TQuery: 2501938µs
+TQuery: 2292447µs
+TQuery: 2503449µs
+TQuery: 2655328µs
+TQuery: 2581642µs
+TQuery: 2558339µs
+TQuery: 2672951µs
+TQuery: 2388250µs
+TQuery: 2534732µs
+TQuery: 2687401µs
+TQuery: 3051827µs
+TQuery: 2503128µs
+TQuery: 2583432µs
+TQuery: 2487287µs
+TQuery: 2506211µs
+TQuery: 2241083µs
+TQuery: 2655665µs
+TQuery: 2381522µs
+TQuery: 2774882µs
+TQuery: 2574910µs
+TQuery: 2886472µs
+TQuery: 2597733µs
+TQuery: 2607557µs
+TQuery: 2652629µs
+TQuery: 2675473µs
+TQuery: 2600162µs
+TQuery: 2490684µs
+TQuery: 2701311µs
+TQuery: 2683676µs
+TQuery: 2576327µs
+TQuery: 2579780µs
+------------
+N_OLAP: 10
+TFork: 110273µs
+TTrans: 17067889µs
+TPS: 58589
+------------
+
