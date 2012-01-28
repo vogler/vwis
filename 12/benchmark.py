@@ -70,13 +70,13 @@ def print_cpuinfo():
 
 def write_csv(filename, results):
     with open(filename, 'wb') as sink:
-        fieldnames = ['no_processes']
-        fieldnames.extend(BenchmarkResult._fields)
+        fieldnames = ['']
+        fieldnames.extend(map(str, sorted(results)))
         writer = DictWriter(sink, fieldnames)
         writer.writeheader()
-        for no_processes in sorted(results):
-            row = {'no_processes': no_processes}
-            row.update(results[no_processes]._asdict())
+        for field in sorted(BenchmarkResult._fields):
+            row = {str(p): getattr(results[p], field) for p in sorted(results)}
+            row[''] = field
             writer.writerow(row)
 
 
