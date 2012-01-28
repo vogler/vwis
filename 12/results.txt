@@ -51,22 +51,22 @@ address sizes	: 48 bits physical, 48 bits virtual
 power management:
 
 *** 0 OLAP process(es) ***
-TTrans - 477.668 ms
-TPS    - 2093504.0
+TTrans - 498.369 ms
+TPS    - 2006545.0
 TFork  - 0.000 ms
 TQuery - 0.000 ms
 *** 1 OLAP process(es) ***
-TTrans - 916.312 ms
-TPS    - 1091331.0
-TFork  - 1.197 ms
-TQuery - 41.849 ms
+TTrans - 807.261 ms
+TPS    - 1238756.0
+TFork  - 1.488 ms
+TQuery - 42.056 ms
 *** 2 OLAP process(es) ***
-TTrans - 727.133 ms
-TPS    - 1375264.0
-TFork  - 1.215 ms
-TQuery - 82.055 ms
+TTrans - 929.100 ms
+TPS    - 1076310.0
+TFork  - 1.659 ms
+TQuery - 41.865 ms
 *** 3 OLAP process(es) ***
-TTrans - 1407.720 ms
-TPS    - 710369.0
-TFork  - 1.109 ms
-TQuery - 80.406 ms
+TTrans - 966.867 ms
+TPS    - 1034268.0
+TFork  - 1.512 ms
+TQuery - 75.888 ms
