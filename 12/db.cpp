@@ -1,10 +1,11 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
+#include <stdexcept>
 #include <iostream>
-#include <iomanip>
+#include <ios>
 #include <random>
-#include <tuple>
+#include <chrono>
 #include <cstring>
 #include <cstdio>
 
@@ -14,6 +15,7 @@
 
 
 using namespace std;
+using namespace chrono;
 
 
 struct Customer
@@ -85,7 +87,7 @@ static Country randomCountry()
 static Customer randomCustomer()
 {
     Customer c;
-    c.country = uniform_int_distribution<int>(0, countries.size()-1)(rng);
+    c.country = uniform_int_distribution<size_t>(0, countries.size()-1)(rng);
     c.discount = uniform_real_distribution<>(0, 0.5)(rng);
     fillRandomName("cust", c.name, sizeof(c.name));
     return c;
@@ -144,6 +146,7 @@ bool operator>(const CustomerExpense &self, const CustomerExpense &other)
     return self.expense > other.expense;
 }
 
+
 ostream &operator<<(ostream &stream, const CustomerExpense &expense)
 {
     auto &customer = customers[expense.customer];
@@ -153,7 +156,7 @@ ostream &operator<<(ostream &stream, const CustomerExpense &expense)
 }
 
 
-void olap()
+void query()
 {
     vector<CustomerExpense> expenses(customers.size());
     for (size_t c=0; c < customers.size(); ++c)
@@ -169,34 +172,131 @@ void olap()
 }
 
 
+
+static microseconds TQuery = microseconds::max();
+
+
+void olap()
+{
+    auto begin = high_resolution_clock::now();
+    query();
+    auto end = high_resolution_clock::now();
+    TQuery = min(TQuery, duration_cast<microseconds>(end - begin));
+}
+
+
 void oltp()
 {
     orders.push_back(randomOrder());
 }
 
 
-int main()
+static ostream &operator<<(ostream &stream, const microseconds &t)
 {
-    populateDB(numCountries, numCustomers, numItems, numOrders);
+    stream << static_cast<double>(t.count()) / 1000.0 << " ms";
+    return stream;
+}
 
-    pid_t pid = fork();
-    if (pid == -1) {
-        perror(0);
-        return EXIT_FAILURE;
-    }
-    else if (pid == 0)
+
+template<class Duration>
+static void printTime(const string &label, const Duration &t)
+{
+    cerr << label << ": " << t << endl;
+}
+
+
+static void childTerminate(int signum)
+{
+    printTime("TQuery", TQuery);
+    exit(EXIT_SUCCESS);
+}
+
+
+static void child()
+{
+    signal(SIGTERM, childTerminate);
+    for (;;) { olap(); }
+}
+
+
+static void parent(const vector<pid_t> children)
+{
+    auto begin = high_resolution_clock::now();
+    for (size_t i = 0; i < totalTransactions; ++i)
     {
-        for (;;) { olap(); }
+        oltp();
     }
-    else
+    auto end = high_resolution_clock::now();
+    microseconds TTrans = duration_cast<microseconds>(end - begin);
+    unsigned long TPS = totalTransactions / static_cast<double>(TTrans.count()) * microseconds::period::den;
+
+    for (auto child : children)
     {
-        for (size_t i = 0; i < totalTransactions; ++i)
-        {
-            oltp();
-        }
-        kill(pid, SIGTERM);
+        kill(child, SIGTERM);
         // avoid zombies
-        wait(0);
+        waitpid(child, 0, 0);
+    }
+
+    // output measured times
+    printTime("TTrans", TTrans);
+    cerr << "TPS: " << TPS << endl;
+}
+
+
+static microseconds TFork = microseconds::max();
+
+
+vector<pid_t> forkOLAP(unsigned int numberOfThreads)
+{
+    vector<pid_t> children;
+    for (unsigned int i=0; i < numberOfThreads; ++i)
+    {
+        auto begin = high_resolution_clock::now();
+        pid_t pid = fork();
+        auto end = high_resolution_clock::now();
+        if (pid == -1)
+        {
+            cout << "cannot fork: " << strerror(errno) << endl;
+            terminate();
+        }
+        else if (pid == 0)
+        {
+            child();
+            exit(EXIT_SUCCESS);
+        }
+        else
+        {
+            TFork = min(TFork, duration_cast<microseconds>(end - begin));
+            children.push_back(pid);
+        }
+    }
+    return children;
+}
+
+
+int main(int argc, char *argv[])
+{
+    vector<string> args(argv, argv+argc);
+    try
+    {
+        unsigned int numberOfOLAP = args.size() > 1 ? stoul(args[1]) : 1;
+
+        populateDB(numCountries, numCustomers, numItems, numOrders);
+
+        cout.unsetf(std::ios_base::floatfield);
+
+        vector<pid_t> children = forkOLAP(numberOfOLAP);
+        parent(children);
+
+        if (!children.empty())
+        {
+            // measure fork in parent
+            printTime("TFork", TFork);
+        }
+    }
+    catch (const invalid_argument &exc)
+    {
+        cerr << "invalid number of threads: " << args[1];
     }
 }
 
