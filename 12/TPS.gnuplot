@@ -13,5 +13,8 @@ set key title "OLAP-Prozesse" box
 
 set output 'TPS.pdf'
 set terminal pdfcairo font 'Arial,8'
-
 plot 'results.csv' using 2 ti col, '' using 3 ti col, '' using 4 ti col, '' using 5 ti col
+
+set output 'TPS.png'
+set terminal pngcairo font 'Arial,8'
+replot
