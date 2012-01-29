@@ -6,7 +6,7 @@ set style fill solid border -1
 set boxwidth 1
 set datafile separator ','
 set yrange [0:2100000]
-set format y "%.0e"
+set format y "%.1e"
 set ylabel "TPS" enhanced
 unset xtics
 set key title "OLAP-Prozesse" box
