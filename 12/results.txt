@@ -4,7 +4,7 @@ cpu family	: 16
 model		: 5
 model name	: AMD Athlon(tm) II X4 640 Processor
 stepping	: 3
-cpu MHz		: 2989.063
+cpu MHz		: 2887.301
 cache size	: 512 KB
 physical id	: 0
 siblings	: 2
@@ -17,7 +17,7 @@ fpu_exception	: yes
 cpuid level	: 5
 wp		: yes
 flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx fxsr_opt rdtscp lm 3dnowext 3dnow rep_good nopl extd_apicid pni lahf_lm cmp_legacy cr8_legacy
-bogomips	: 5978.12
+bogomips	: 5774.60
 TLB size	: 1024 4K pages
 clflush size	: 64
 cache_alignment	: 64
@@ -30,7 +30,7 @@ cpu family	: 16
 model		: 5
 model name	: AMD Athlon(tm) II X4 640 Processor
 stepping	: 3
-cpu MHz		: 2989.063
+cpu MHz		: 2887.301
 cache size	: 512 KB
 physical id	: 0
 siblings	: 2
@@ -43,7 +43,7 @@ fpu_exception	: yes
 cpuid level	: 5
 wp		: yes
 flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx fxsr_opt rdtscp lm 3dnowext 3dnow rep_good nopl extd_apicid pni lahf_lm cmp_legacy cr8_legacy
-bogomips	: 5935.25
+bogomips	: 5766.96
 TLB size	: 1024 4K pages
 clflush size	: 64
 cache_alignment	: 64
@@ -51,22 +51,22 @@ address sizes	: 48 bits physical, 48 bits virtual
 power management:
 
 *** 0 OLAP process(es) ***
-TTrans - 498.369 ms
-TPS    - 2006545.0
+TTrans - 364.492 ms
+TPS    - 2743544.0
 TFork  - 0.000 ms
 TQuery - 0.000 ms
 *** 1 OLAP process(es) ***
-TTrans - 807.261 ms
-TPS    - 1238756.0
-TFork  - 1.488 ms
-TQuery - 42.056 ms
+TTrans - 435.637 ms
+TPS    - 2295489.0
+TFork  - 0.343 ms
+TQuery - 36.990 ms
 *** 2 OLAP process(es) ***
-TTrans - 929.100 ms
-TPS    - 1076310.0
-TFork  - 1.659 ms
-TQuery - 41.865 ms
+TTrans - 471.381 ms
+TPS    - 2121426.0
+TFork  - 0.312 ms
+TQuery - 53.025 ms
 *** 3 OLAP process(es) ***
-TTrans - 966.867 ms
-TPS    - 1034268.0
-TFork  - 1.512 ms
-TQuery - 75.888 ms
+TTrans - 852.568 ms
+TPS    - 1172926.0
+TFork  - 0.425 ms
+TQuery - 73.316 ms
