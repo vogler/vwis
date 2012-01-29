@@ -8,6 +8,7 @@ set datafile separator ','
 set yrange [0:2100000]
 set format y "%.1e"
 set ylabel "TPS" enhanced
+set grid
 unset xtics
 set key title "OLAP-Prozesse" box
 
