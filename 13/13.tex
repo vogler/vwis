@@ -9,6 +9,7 @@
 \usepackage{amssymb}
 \usepackage{enumerate}
 \usepackage{graphicx}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -19,9 +20,10 @@
 \maketitle
 
 \section{WordCount}
-Siehe Anhang, Verzeichnisse 1 (einfache Tokens) und 2 (ignoriert "," und Klein-/Großschreibung).
-Parallele Ausführung: 58s.
-Sequenzielle Ausführung führte zu Heap Space Exception (siehe error.txt).
+Siehe Anhang, Verzeichnisse 1 (einfache Tokens) und 2 (ignoriert Komma und Klein-/Großschreibung).\\
+Parallele Ausführung: 58s.\\
+Sequenzielle Ausführung führte zu Heap Space Exception (siehe error.txt).\\
+Laut \url{http://hadoop.apache.org/common/docs/stable/single_node_setup.html} sollte Standalone ohne Anpassungen funktionieren. Output-Verzeichnis wird auch erstellt, Vorgang bricht aber bei map ab. In VM mit 1,5GB RAM getestet.
 
 \section{Join}
 Siehe Anhang, Verzeichnis 3 (Join.java).

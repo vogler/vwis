@@ -1,0 +1,5 @@
+ralf@ralf-vb:~/Ubuntu/vwis 13/1$ hadoop fs -cat output/part-00000
+dead	1
+disk	1
+is	2
+tape	2
