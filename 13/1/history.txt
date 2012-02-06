@@ -1,0 +1,8 @@
+# Pseudo-Distributed Operation -> works
+hadoop fs -put words.txt input/words
+hadoop jar wordcount.jar org.myorg.WordCount input output
+
+# Standalone Operation -> fails (heap space)
+mkdir input && cp words.txt input/words
+hadoop jar wordcount.jar org.myorg.WordCount input output
+hadoop jar /home/ralf/hadoop-1.0.0/share/hadoop/hadoop-examples-1.0.0.jar wordcount input output
