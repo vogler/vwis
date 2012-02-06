@@ -26,23 +26,23 @@ import org.apache.hadoop.mapred.lib.IdentityReducer;
 public class Join {
 
 	public static class Map extends MapReduceBase implements
-			Mapper<LongWritable, Text, LongWritable, Text> {
+			Mapper<LongWritable, Text, Text, Text> {
 
 		public void map(LongWritable position, Text line,
-				OutputCollector<LongWritable, Text> output, Reporter reporter)
+				OutputCollector<Text, Text> output, Reporter reporter)
 				throws IOException {
 //			Path path = ((FileSplit)reporter.getInputSplit()).getPath();
 			StringTokenizer tok = new StringTokenizer(line.toString(), "|");
-			LongWritable key = new LongWritable(Long.parseLong(tok.nextToken().trim()));
+			Text key = new Text(tok.nextToken().trim());
 			Text payload = new Text(tok.nextToken().trim());
 			output.collect(key, payload);
 		}
 	}
 
 	public static class Reduce extends MapReduceBase implements
-			Reducer<LongWritable, Text, LongWritable, Text> {
-		public void reduce(LongWritable key, Iterator<Text> values,
-				OutputCollector<LongWritable, Text> output, Reporter reporter)
+			Reducer<Text, Text, Text, Text> {
+		public void reduce(Text key, Iterator<Text> values,
+				OutputCollector<Text, Text> output, Reporter reporter)
 				throws IOException {
 			List<String> payloads = new ArrayList<String>();
 			while (values.hasNext() && payloads.size() < 2) {
@@ -60,7 +60,7 @@ public class Join {
 		JobConf conf = new JobConf(Join.class);
 		conf.setJobName("join");
 
-		conf.setOutputKeyClass(LongWritable.class);
+		conf.setOutputKeyClass(Text.class);
 		conf.setOutputValueClass(Text.class);
 
 		conf.setMapperClass(Map.class);
